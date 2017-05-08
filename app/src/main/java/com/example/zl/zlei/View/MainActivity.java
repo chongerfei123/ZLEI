@@ -1,6 +1,5 @@
 package com.example.zl.zlei.View;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -8,10 +7,10 @@ import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import com.example.zl.zlei.Present.NewsPresent;
+import com.example.zl.zlei.Present.MainPresent;
 import com.example.zl.zlei.R;
 import com.example.zl.zlei.View.activi.BaseActivity;
-import com.example.zl.zlei.View.activi.NewsViewActivity;
+import com.example.zl.zlei.View.activi.MainActivityInterface;
 import com.example.zl.zlei.View.frg.JokesFragment;
 import com.example.zl.zlei.View.frg.NewsFragment;
 
@@ -19,7 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity<NewsViewActivity, NewsPresent> implements NewsViewActivity {
+public class MainActivity extends BaseActivity<MainActivityInterface, MainPresent> implements MainActivityInterface {
 
     @BindView(R.id.radioButton_news)
     RadioButton radioButtonNews;
@@ -31,7 +30,6 @@ public class MainActivity extends BaseActivity<NewsViewActivity, NewsPresent> im
     private NewsFragment newsFragment;
     private JokesFragment jokesFragment;
     private FragmentManager fragmentManager;
-    private Context context;
 
 
     @Override
@@ -39,7 +37,6 @@ public class MainActivity extends BaseActivity<NewsViewActivity, NewsPresent> im
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-        context = this;
         FragmentInit();
 
     }
@@ -69,7 +66,7 @@ public class MainActivity extends BaseActivity<NewsViewActivity, NewsPresent> im
     }
 
     @Override
-    protected NewsPresent createPresenter() {
-        return new NewsPresent(this);
+    protected MainPresent createPresenter() {
+        return new MainPresent(this);
     }
 }
