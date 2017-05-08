@@ -1,5 +1,6 @@
 package com.example.zl.zlei.Present;
 
+import com.example.zl.zlei.View.frg.NewsFragment;
 import com.example.zl.zlei.View.frg.NewsFragmentInterface;
 
 /**
@@ -7,4 +8,9 @@ import com.example.zl.zlei.View.frg.NewsFragmentInterface;
  */
 
 public class NewsFragmentPresent extends BasePresenter<NewsFragmentInterface> {
+    NewsFragmentInterface newsFragmentInterface;
+    public NewsFragmentPresent(NewsFragmentInterface newsFragmentInterface) {
+        super();
+        this.newsFragmentInterface = newsFragmentInterface;
+    }
 }

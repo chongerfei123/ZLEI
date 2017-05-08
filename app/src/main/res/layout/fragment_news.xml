@@ -1,13 +1,61 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.zl.zlei.View.frg.NewsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <!--当没有CollapsingToolbarLayout时：
+    让toolbar 自动隐藏和显示
+    在toolbar下：app:layout_scrollFlags = "scroll|enterAlways" :没有悬停条目
+                 app:layout_scrollFlags = "scroll|enterAlwaysCollapsed" ：有悬停条目
+    ps：有了CollapsingToolbarLayout，上面的不需要了
+        当有了有了CollapsingToolbarLayout时
+        app:layout_scrollFlags = "scroll|enterAlways"这个属性就加在CollapsingToolbarLayout上面
+    -->
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="hello_news_fragment" />
+        android:layout_height="wrap_content">
 
-</FrameLayout>
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <!--app:contentScrim="@color/colorAccent" 遮蔽的颜色
+                折起来以后背景条的颜色-->
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:contentScrim="@color/colorAccent"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+                <android.support.v7.widget.Toolbar
+                    android:id="@+id/toolbarInAppBarLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="?actionBarSize" />
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+    </android.support.design.widget.CoordinatorLayout>
+
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabBackground="@color/colorPrimaryDark"
+        app:tabMode="scrollable"
+        app:tabTextColor="@android:color/black" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+
+</LinearLayout>
