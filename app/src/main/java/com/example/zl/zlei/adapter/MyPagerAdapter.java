@@ -16,7 +16,7 @@ import com.example.zl.zlei.View.frg.channalfrg.NBAFragment;
 import com.example.zl.zlei.View.frg.channalfrg.PEFragment;
 import com.example.zl.zlei.View.frg.channalfrg.SharesFragment;
 import com.example.zl.zlei.View.frg.channalfrg.TechnologyFragment;
-import com.example.zl.zlei.View.frg.channalfrg.TopFragment;
+import com.example.zl.zlei.View.frg.channalfrg.ToutiaoFragment;
 import com.example.zl.zlei.View.frg.channalfrg.WomenFragment;
 import com.example.zl.zlei.View.frg.channalfrg.XinWenFragment;
 
@@ -29,7 +29,7 @@ import java.util.ArrayList;
 public class MyPagerAdapter extends FragmentPagerAdapter {
     private static ArrayList<String> channalList = new ArrayList<String>(){{add("头条"); add("新闻");add("财经"); add("体育");add("娱乐");
                                     add("军事");add("教育"); add("科技");add("NBA"); add("股票");add("星座"); add("女性");add("健康"); add("育儿");}};
-    private TopFragment topFragment = null;
+    private ToutiaoFragment toutiaoFragment = null;
     private XinWenFragment xinWenFragment = null;
     private FinanceFragment financeFragment = null;
     private PEFragment peFragment = null;
@@ -51,9 +51,9 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
     }
 
     private void initFragments() {
-        Log.e("sout","initFragments");
-        if (topFragment == null){
-            topFragment = new TopFragment();
+        //Log.e("sout","initFragments");
+        if (toutiaoFragment == null){
+            toutiaoFragment = new ToutiaoFragment();
         }
         if (xinWenFragment == null){
             xinWenFragment = new XinWenFragment();
@@ -98,9 +98,9 @@ public class MyPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Log.e("sout","getItem");
+       // Log.e("sout","getItem");
         switch (position) {
-            case 0:currentFragment = topFragment; break;
+            case 0:currentFragment = toutiaoFragment; break;
             case 1:currentFragment = xinWenFragment; break;
             case 2:currentFragment = financeFragment; break;
             case 3:currentFragment = peFragment; break;

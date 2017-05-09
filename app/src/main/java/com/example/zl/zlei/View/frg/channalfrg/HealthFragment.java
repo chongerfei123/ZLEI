@@ -3,28 +3,34 @@ package com.example.zl.zlei.View.frg.channalfrg;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.zl.zlei.R;
+import com.example.zl.zlei.adapter.MyRecyclerAdapter;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
  * Created by zl on 2017/5/8.
  */
 
-public class HealthFragment extends Fragment {
+public class HealthFragment extends TopFragment {
+    @BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.top, container, false);
+        View view = inflater.inflate(R.layout.health, container, false);
+        super.unbinder = ButterKnife.bind(this, view);
+        super.adapter = new MyRecyclerAdapter(null);
+        super.recyclerView = this.recyclerView;
+        super.channal = "健康";
         return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        TextView Test_txet = (TextView) view.findViewById(R.id.Test_txet);
-        Test_txet.setText("HealthFragment");
     }
 }

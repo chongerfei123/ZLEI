@@ -61,7 +61,7 @@ public class MainActivity extends BaseActivity<MainActivityInterface, MainPresen
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.add(R.id.frameLayout_fragment,newsFragment,"news");
         transaction.add(R.id.frameLayout_fragment,jokesFragment,"jokes");
-        //transaction.hide(jokesFragment);
+        transaction.hide(jokesFragment);
         transaction.commit();
     }
 
