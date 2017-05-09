@@ -3,6 +3,8 @@ package com.example.zl.zlei.adapter;
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.example.zl.zlei.bean.DataBean;
 
+import java.lang.reflect.Type;
+
 import okhttp3.Address;
 
 /**
@@ -10,20 +12,28 @@ import okhttp3.Address;
  */
 
 public class MultyItemBean extends MultiItemEntity{
+    public static int TYPE_pic = 1;
+    public static int TYPE2_nopic = 2;
     DataBean.ResultBean.ListBean bean;
+    private int type;
     public MultyItemBean(DataBean.ResultBean.ListBean bean) {
         super();
         this.bean = bean;
 
     }
 
+    public MultyItemBean(int type, DataBean.ResultBean.ListBean bean) {
+        this.bean = bean;
+        this.type = type;
+    }
+
     @Override
     public int getItemType() {
-        return super.getItemType();
+        return type;
     }
 
     @Override
     public void setItemType(int itemType) {
-        super.setItemType(itemType);
+        this.type = itemType;
     }
 }

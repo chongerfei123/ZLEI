@@ -57,7 +57,12 @@ public class ChannalModleImp implements ChannalModle {
 
         ArrayList<MultyItemBean> data = new ArrayList<>();
         for (DataBean.ResultBean.ListBean bean : list) {
-            data.add(new MultyItemBean(bean));
+            if (bean.getPic().equals("")){
+                data.add(new MultyItemBean(MultyItemBean.TYPE2_nopic,bean));
+            }else {
+                data.add(new MultyItemBean(MultyItemBean.TYPE_pic,bean));
+            }
+
         }
         return data;
     }
