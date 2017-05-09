@@ -4,8 +4,10 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +41,8 @@ public class TopFragment extends BaseFragment<ChannalFragmentInterface, ChannalF
     Unbinder unbinder;
     public MyRecyclerAdapter adapter;
     public String channal;
+    private int currentNum = 0;
+    public SwipeRefreshLayout swipeRefreshLayout;
 
     @Nullable
     @Override
@@ -47,6 +51,7 @@ public class TopFragment extends BaseFragment<ChannalFragmentInterface, ChannalF
         unbinder = null;
         adapter = null;
         channal = null;
+        swipeRefreshLayout = null;
         return view;
     }
 
@@ -59,12 +64,57 @@ public class TopFragment extends BaseFragment<ChannalFragmentInterface, ChannalF
             @Override
             public void OnSucceed(ArrayList<MultyItemBean> data) {
                 adapter.setNewData(data);
+                currentNum = Global.NUM;
             }
             @Override
             public void OnError() {
 
             }
         });
+
+        /**
+         * 加载更多的逻辑
+         * 问题是用这个被废弃的方法可以，但是用没废弃的那个方法就不行不知道为什么
+         */
+        adapter.setOnLoadMoreListener(10,new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                mfragmentPresenter.loadData(channal,currentNum, Global.NUM,Global.APPKEY,new OnDataListener(){
+                    @Override
+                    public void OnSucceed(ArrayList<MultyItemBean> data) {
+                        //adapter.addData(data);
+                        currentNum = currentNum + Global.NUM;
+                        adapter.isNextLoad(false);
+                        adapter.notifyDataChangedAfterLoadMore(data,true);
+                        adapter.isNextLoad(true);
+                    }
+                    @Override
+                    public void OnError() {
+                        Log.e("sout","加载更多错误");
+                    }
+                });
+            }
+        });
+
+        // TODO: 2017/5/9 下拉刷新
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mfragmentPresenter.loadData(channal,0, Global.NUM,Global.APPKEY,new OnDataListener(){
+                    @Override
+                    public void OnSucceed(ArrayList<MultyItemBean> data) {
+                        adapter.setNewData(data);
+                        currentNum = Global.NUM;
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                    @Override
+                    public void OnError() {
+                        Log.e("sout","下拉刷新错误");
+                    }
+                });
+            }
+        });
+
     }
 
     @Override
@@ -78,6 +128,11 @@ public class TopFragment extends BaseFragment<ChannalFragmentInterface, ChannalF
         recyclerView.setAdapter(adapter);
         adapter.setContext(getContext());
         adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        adapter.openLoadMore(10,true);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
 
     @Override

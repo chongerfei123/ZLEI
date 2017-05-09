@@ -2,12 +2,11 @@ package com.example.zl.zlei.View.frg.channalfrg;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.zl.zlei.R;
 import com.example.zl.zlei.adapter.MyRecyclerAdapter;
@@ -22,6 +21,8 @@ import butterknife.ButterKnife;
 public class TechnologyFragment extends TopFragment {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Nullable
     @Override
@@ -31,6 +32,8 @@ public class TechnologyFragment extends TopFragment {
         super.adapter = new MyRecyclerAdapter(null);
         super.recyclerView = this.recyclerView;
         super.channal = "科技";
+        super.swipeRefreshLayout = swipeRefreshLayout;
         return view;
     }
+
 }

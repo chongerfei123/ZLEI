@@ -2,6 +2,7 @@ package com.example.zl.zlei.View.frg.channalfrg;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,8 @@ public class ToutiaoFragment extends TopFragment {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+    @BindView(R.id.swipeRefreshLayout)
+    SwipeRefreshLayout swipeRefreshLayout;
 
     @Nullable
     @Override
@@ -30,7 +33,7 @@ public class ToutiaoFragment extends TopFragment {
         super.adapter = new MyRecyclerAdapter(null);
         super.recyclerView = this.recyclerView;
         super.channal = "头条";
+        super.swipeRefreshLayout = swipeRefreshLayout;
         return view;
     }
-
 }
