@@ -6,10 +6,10 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.example.zl.zlei.Present.NewsFragmentPresent;
 import com.example.zl.zlei.R;
@@ -30,6 +30,8 @@ public class NewsFragment extends BaseFragment<NewsFragmentInterface, NewsFragme
     @BindView(R.id.viewPager)
     ViewPager viewPager;
     Unbinder unbinder;
+    @BindView(R.id.search_button)
+    ImageButton searchButton;
 
     public NewsFragment() {
         // Required empty public constructor
