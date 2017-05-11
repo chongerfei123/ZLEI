@@ -39,10 +39,11 @@ public class MyRecyclerAdapter extends BaseMultiItemQuickAdapter<MultyItemBean> 
         switch (baseViewHolder.getItemViewType()) {
             case 1:
                 if (pic != null && !pic.equals("") ){
+                    baseViewHolder.setOnClickListener(R.id.image_pic, new OnItemChildClickListener());
                     Picasso.with(context).load(pic).fit().placeholder(R.mipmap.ic_launcher_round).into(icon);
                 }
                 break;
-            case 2:break;
+            case 2:baseViewHolder.setOnClickListener(R.id.image_nopic, new OnItemChildClickListener());break;
         }
 
 

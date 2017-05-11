@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.animation.BaseAnimation;
@@ -22,6 +23,7 @@ import com.example.zl.zlei.adapter.MultyItemBean;
 import com.example.zl.zlei.adapter.MyRecyclerAdapter;
 import com.example.zl.zlei.global.Global;
 import com.example.zl.zlei.listener.OnDataListener;
+import com.example.zl.zlei.listener.OnScrollListener;
 import com.example.zl.zlei.others.SpaceItemDecoration;
 
 import java.util.ArrayList;
@@ -43,6 +45,7 @@ public class TopFragment extends BaseFragment<ChannalFragmentInterface, ChannalF
     public String channal;
     private int currentNum = 0;
     public SwipeRefreshLayout swipeRefreshLayout;
+    private OnScrollListener scrollListener;
 
     @Nullable
     @Override
@@ -58,45 +61,36 @@ public class TopFragment extends BaseFragment<ChannalFragmentInterface, ChannalF
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
-        //http://api.jisuapi.com/news/get?channel=头条&start=0&num=10&appkey=yourappkey
+        //对adapter、swipeRefreshLayout、recyclerView的初始化
         initRecAndAda();
-        mfragmentPresenter.loadData(channal,0, Global.NUM,Global.APPKEY,new OnDataListener(){
-            @Override
-            public void OnSucceed(ArrayList<MultyItemBean> data) {
-                adapter.setNewData(data);
-                currentNum = Global.NUM;
-            }
-            @Override
-            public void OnError() {
+        //初始第一次加载数据
+        firstLoadData();
+        //上拉加载更多
+        loadMoreData();
+        //下拉刷新
+        refreshData();
+        //删除Item
+        deleteItem();
+    }
 
-            }
-        });
-
-        /**
-         * 加载更多的逻辑
-         * 问题是用这个被废弃的方法可以，但是用没废弃的那个方法就不行不知道为什么
-         */
-        adapter.setOnLoadMoreListener(10,new BaseQuickAdapter.RequestLoadMoreListener() {
+    /**
+     * 有一个bug：先删除item，再滑动到底下就不会loadmore了
+     */
+    private void deleteItem() {
+        adapter.setOnRecyclerViewItemChildClickListener(new BaseQuickAdapter.OnRecyclerViewItemChildClickListener() {
             @Override
-            public void onLoadMoreRequested() {
-                mfragmentPresenter.loadData(channal,currentNum, Global.NUM,Global.APPKEY,new OnDataListener(){
-                    @Override
-                    public void OnSucceed(ArrayList<MultyItemBean> data) {
-                        //adapter.addData(data);
-                        currentNum = currentNum + Global.NUM;
-                        adapter.isNextLoad(false);
-                        adapter.notifyDataChangedAfterLoadMore(data,true);
-                        adapter.isNextLoad(true);
-                    }
-                    @Override
-                    public void OnError() {
-                        Log.e("sout","加载更多错误");
-                    }
-                });
+            public void onItemChildClick(BaseQuickAdapter baseQuickAdapter, View view, int i) {
+                adapter.remove(i);
+                adapter.notifyItemRemoved(i);
+                Toast.makeText(getContext(), view.getId()+"被点击了", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
-        // TODO: 2017/5/9 下拉刷新
+    /**
+     * 下拉刷新
+     */
+    private void refreshData() {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -114,7 +108,46 @@ public class TopFragment extends BaseFragment<ChannalFragmentInterface, ChannalF
                 });
             }
         });
+    }
 
+    /**
+     * 加载更多的逻辑
+     * 问题是用这个被废弃的方法可以，但是用没废弃的那个方法就不行不知道为什么
+     */
+    private void loadMoreData() {
+        adapter.setOnLoadMoreListener(10,new BaseQuickAdapter.RequestLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                mfragmentPresenter.loadData(channal,currentNum, Global.NUM,Global.APPKEY,new OnDataListener(){
+                    @Override
+                    public void OnSucceed(ArrayList<MultyItemBean> data) {
+                        currentNum = currentNum + Global.NUM;
+                        adapter.isNextLoad(false);
+                        adapter.addData(data);
+                        adapter.notifyDataChangedAfterLoadMore(true);
+                        adapter.isNextLoad(true);
+                    }
+                    @Override
+                    public void OnError() {
+                        Log.e("sout","加载更多错误");
+                    }
+                });
+            }
+        });
+    }
+
+    private void firstLoadData() {
+        mfragmentPresenter.loadData(channal,0, Global.NUM,Global.APPKEY,new OnDataListener(){
+            @Override
+            public void OnSucceed(ArrayList<MultyItemBean> data) {
+                adapter.setNewData(data);
+                currentNum = Global.NUM;
+            }
+            @Override
+            public void OnError() {
+
+            }
+        });
     }
 
     @Override

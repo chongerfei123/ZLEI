@@ -26,7 +26,7 @@
             android:layout_weight="1">
 
             <TextView
-                android:paddingTop="10dp"
+                android:padding="10dp"
                 android:textSize="18sp"
                 android:text="平壤札记｜超近距离看金正恩剪彩，现场掌声雷动！"
                 android:id="@+id/title"
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:text="来源："
                 android:id="@+id/textView3"
-                android:layout_marginStart="39dp"
+                android:layout_marginStart="19dp"
                 android:layout_alignParentStart="true" />
 
             <TextView
@@ -52,16 +52,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="环球网"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="5dp"
                 android:layout_toEndOf="@+id/textView3" />
 
             <TextView
+                android:id="@+id/fl"
                 android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="分类："
-                android:layout_toStartOf="@+id/category"
-                android:layout_marginEnd="22dp" />
+                android:layout_toEndOf="@+id/src"
+                android:layout_marginStart="30dp" />
 
             <TextView
                 android:layout_centerVertical="true"
@@ -69,11 +70,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="category"
-                android:layout_marginEnd="47dp"
-                android:layout_alignParentEnd="true" />
+                android:layout_toEndOf="@+id/fl"
+                android:layout_marginStart="5dp"
+                />
 
-            <ImageView
+            <ImageButton
+                android:id="@+id/image_nopic"
+                android:clickable="true"
+                android:background="?android:attr/selectableItemBackgroundBorderless"
                 android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
                 android:src="@drawable/xx"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />

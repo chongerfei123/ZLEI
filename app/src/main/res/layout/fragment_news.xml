@@ -39,6 +39,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="?actionBarSize" />
             </android.support.design.widget.CollapsingToolbarLayout>
+
+
         </android.support.design.widget.AppBarLayout>
     </android.support.design.widget.CoordinatorLayout>
 

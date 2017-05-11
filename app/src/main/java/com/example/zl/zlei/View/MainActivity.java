@@ -3,8 +3,10 @@ package com.example.zl.zlei.View;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.example.zl.zlei.Present.MainPresent;
@@ -13,6 +15,8 @@ import com.example.zl.zlei.View.activi.BaseActivity;
 import com.example.zl.zlei.View.activi.MainActivityInterface;
 import com.example.zl.zlei.View.frg.JokesFragment;
 import com.example.zl.zlei.View.frg.NewsFragment;
+import com.example.zl.zlei.View.frg.channalfrg.TopFragment;
+import com.example.zl.zlei.listener.OnScrollListener;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -26,11 +30,13 @@ public class MainActivity extends BaseActivity<MainActivityInterface, MainPresen
     RadioButton radioButtonJokes;
     @BindView(R.id.frameLayout_fragment)
     FrameLayout frameLayout_fragment;
+    @BindView(R.id.radioGroup)
+    RadioGroup radioGroup;
 
     private NewsFragment newsFragment;
     private JokesFragment jokesFragment;
     private FragmentManager fragmentManager;
-
+    private TopFragment topFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,29 +44,38 @@ public class MainActivity extends BaseActivity<MainActivityInterface, MainPresen
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         FragmentInit();
+    }
 
+    private void dismismRadioGroup() {
+        for (int i = 0; i < 1; i++) {
+            TranslateAnimation translate = new TranslateAnimation(0, 0, 0, radioGroup.getHeight());
+            translate.setFillAfter(true);
+            translate.setDuration(1000);
+            radioGroup.startAnimation(translate);
+        }
     }
 
     @OnClick(R.id.radioButton_news)
-    public void radioButtonNewsOnClick (){
+    public void radioButtonNewsOnClick() {
         Toast.makeText(this, "radioButtonNewsOnClick", Toast.LENGTH_SHORT).show();
-        mPresenter.changeFragment(newsFragment,fragmentManager);
+        mPresenter.changeFragment(newsFragment, fragmentManager);
     }
 
     @OnClick(R.id.radioButton_jokes)
-    public void radioButtonJokesOnClick (){
+    public void radioButtonJokesOnClick() {
         Toast.makeText(this, "radioButtonJokesOnClick", Toast.LENGTH_SHORT).show();
-        mPresenter.changeFragment(jokesFragment,fragmentManager);
+        mPresenter.changeFragment(jokesFragment, fragmentManager);
     }
 
 
     private void FragmentInit() {
+        topFragment = new TopFragment();
         newsFragment = new NewsFragment();
         jokesFragment = new JokesFragment();
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.add(R.id.frameLayout_fragment,newsFragment,"news");
-        transaction.add(R.id.frameLayout_fragment,jokesFragment,"jokes");
+        transaction.add(R.id.frameLayout_fragment, newsFragment, "news");
+        transaction.add(R.id.frameLayout_fragment, jokesFragment, "jokes");
         transaction.hide(jokesFragment);
         transaction.commit();
     }
