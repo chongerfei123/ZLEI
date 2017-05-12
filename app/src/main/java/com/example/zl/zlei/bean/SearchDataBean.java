@@ -98,6 +98,7 @@ public class SearchDataBean {
             private String content;
             private List<String> pic;
 
+
             public String getTitle() {
                 return title;
             }

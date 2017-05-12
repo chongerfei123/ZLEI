@@ -2,6 +2,7 @@ package com.example.zl.zlei.adapter;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 import com.example.zl.zlei.bean.DataBean;
+import com.example.zl.zlei.bean.SearchDataBean;
 
 import java.lang.reflect.Type;
 

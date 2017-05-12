@@ -1,6 +1,7 @@
 package com.example.zl.zlei.View.frg;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -13,6 +14,8 @@ import android.widget.ImageButton;
 
 import com.example.zl.zlei.Present.NewsFragmentPresent;
 import com.example.zl.zlei.R;
+import com.example.zl.zlei.View.MainActivity;
+import com.example.zl.zlei.View.activi.SearchActivity;
 import com.example.zl.zlei.adapter.MyPagerAdapter;
 
 import butterknife.BindView;
@@ -63,5 +66,12 @@ public class NewsFragment extends BaseFragment<NewsFragmentInterface, NewsFragme
         super.onActivityCreated(savedInstanceState);
         viewPager.setAdapter(new MyPagerAdapter(getChildFragmentManager()));
         tabLayout.setupWithViewPager(viewPager);
+        searchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

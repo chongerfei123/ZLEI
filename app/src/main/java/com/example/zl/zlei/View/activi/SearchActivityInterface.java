@@ -5,4 +5,11 @@ package com.example.zl.zlei.View.activi;
  */
 
 public interface SearchActivityInterface {
+
+    void showProgressBar();
+    void hideProgressBar();
+    void showError();
+    void hideError();
+    void hideHistoryrecord();
+
 }

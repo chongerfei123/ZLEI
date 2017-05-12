@@ -30,10 +30,10 @@
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:text="平壤札记｜超近距离看金正恩剪彩，现场掌声雷动！"
-                android:textSize="18sp" />
+                android:textSize="20sp" />
 
             <ImageView
-                android:id="@+id/icon"
+                android:id="@+id/search_image1"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"

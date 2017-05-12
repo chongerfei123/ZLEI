@@ -4,6 +4,7 @@ import com.example.zl.zlei.global.Global;
 import com.example.zl.zlei.listener.LoadJsonListener;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -20,7 +21,11 @@ public class OkhttpUtil {
     private static OkhttpUtil okhttpUtil;
 
     public OkhttpUtil() {
-        okHttpClient = new OkHttpClient();
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        builder.writeTimeout(30, TimeUnit.SECONDS);
+        builder.connectTimeout(50,TimeUnit.SECONDS);
+        builder.readTimeout(30,TimeUnit.SECONDS);
+        okHttpClient = builder.build();
     }
 
     public static OkhttpUtil getInstance(){
@@ -35,6 +40,10 @@ public class OkhttpUtil {
     public void getJson(String channel, int start, int num, String appkey, final LoadJsonListener loadJsonListener){
        // http://api.jisuapi.com/news/get?channel=头条&start=0&num=10&appkey=yourappkey
         String url = Global.MainURL + "channel=" + channel + "&start=" + start + "&num=" + num + "&appkey=" + appkey;
+        callNet(loadJsonListener, url);
+    }
+
+    private void callNet(final LoadJsonListener loadJsonListener, String url) {
         final Request request = new Request.Builder().url(url).build();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
@@ -48,5 +57,11 @@ public class OkhttpUtil {
                 loadJsonListener.OnSucceed(json);
             }
         });
+    }
+
+    public void getJson(String searchContent, String appkey, LoadJsonListener loadJsonListener) {
+        //http://api.jisuapi.com/news/search?keyword=xx&appkey=03f42e0ee8987c79
+        String url = Global.SearchMainURL + "keyword=" + searchContent + "&appkey=" + appkey;
+        callNet(loadJsonListener, url);
     }
 }
