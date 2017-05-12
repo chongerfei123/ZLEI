@@ -10,6 +10,11 @@ import com.example.zl.zlei.Present.MainPresent;
 import com.example.zl.zlei.Present.SearchActivityPresent;
 import com.example.zl.zlei.R;
 import com.example.zl.zlei.adapter.HomeAdapter;
+import com.example.zl.zlei.adapter.SearchMultyItemBean;
+import com.example.zl.zlei.adapter.SearchRecyclerAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -27,7 +32,12 @@ public class SearchActivity extends BaseActivity<SearchActivityInterface, Search
         setContentView(R.layout.activity_search);
         ButterKnife.bind(this);
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        searchRecyclerView.setAdapter(new HomeAdapter(this));
+        List<SearchMultyItemBean> data = new ArrayList<SearchMultyItemBean>();
+        data.add(new SearchMultyItemBean(SearchMultyItemBean.TYPE_3pic,null));
+        data.add(new SearchMultyItemBean(SearchMultyItemBean.TYPE_2pic,null));
+        data.add(new SearchMultyItemBean(SearchMultyItemBean.TYPE_1pic,null));
+        data.add(new SearchMultyItemBean(SearchMultyItemBean.TYPE_0pic,null));
+        searchRecyclerView.setAdapter(new SearchRecyclerAdapter(data));
     }
 
     @Override
