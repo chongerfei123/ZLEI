@@ -5,4 +5,7 @@ package com.example.zl.zlei.View.frg.channalfrg;
  */
 
 public interface ChannalFragmentInterface {
+    void showView();
+    void showErrorView();
+    void showProgress();
 }

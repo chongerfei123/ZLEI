@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -46,6 +48,8 @@ public class TopFragment extends BaseFragment<ChannalFragmentInterface, ChannalF
     private int currentNum = 0;
     public SwipeRefreshLayout swipeRefreshLayout;
     private OnScrollListener scrollListener;
+    public RelativeLayout errorView;
+    public ProgressBar channalProgress;
 
     @Nullable
     @Override
@@ -55,6 +59,8 @@ public class TopFragment extends BaseFragment<ChannalFragmentInterface, ChannalF
         adapter = null;
         channal = null;
         swipeRefreshLayout = null;
+        errorView = null;
+        channalProgress = null;
         return view;
     }
 
@@ -177,5 +183,26 @@ public class TopFragment extends BaseFragment<ChannalFragmentInterface, ChannalF
     @Override
     protected ChannalFragmentPresent createPresenter() {
         return new ChannalFragmentPresent(this);
+    }
+
+    @Override
+    public void showView() {
+        errorView.setVisibility(View.INVISIBLE);
+        channalProgress.setVisibility(View.INVISIBLE);
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showErrorView() {
+        errorView.setVisibility(View.VISIBLE);
+        channalProgress.setVisibility(View.INVISIBLE);
+        swipeRefreshLayout.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showProgress() {
+        errorView.setVisibility(View.INVISIBLE);
+        channalProgress.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setVisibility(View.INVISIBLE);
     }
 }

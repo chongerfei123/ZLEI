@@ -28,6 +28,7 @@ public class ChannalFragmentPresent extends BasePresenter<ChannalFragmentInterfa
     }
 
     public void loadData(String channel, int start, int num, String appkey, final OnDataListener onDataListener) {
+        fragment.showProgress();
         Observable<ArrayList<MultyItemBean>> observable = modle.loadData(channel, start, num, appkey);
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<ArrayList<MultyItemBean>>() {
             @Override
@@ -38,11 +39,13 @@ public class ChannalFragmentPresent extends BasePresenter<ChannalFragmentInterfa
             @Override
             public void onError(Throwable e) {
                 onDataListener.OnError();
+                fragment.showErrorView();
             }
 
             @Override
             public void onNext(ArrayList<MultyItemBean> data) {
                 onDataListener.OnSucceed(data);
+                fragment.showView();
             }
         });
     }

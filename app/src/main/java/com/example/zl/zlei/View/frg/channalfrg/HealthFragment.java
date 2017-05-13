@@ -7,6 +7,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.example.zl.zlei.R;
 import com.example.zl.zlei.adapter.MyRecyclerAdapter;
@@ -23,6 +25,10 @@ public class HealthFragment extends TopFragment {
     RecyclerView recyclerView;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.errorView)
+    RelativeLayout errorView;
+    @BindView(R.id.channal_progress)
+    ProgressBar channalProgress;
 
     @Nullable
     @Override
@@ -33,6 +39,8 @@ public class HealthFragment extends TopFragment {
         super.recyclerView = this.recyclerView;
         super.channal = "健康";
         super.swipeRefreshLayout = swipeRefreshLayout;
+        super.errorView = errorView;
+        super.channalProgress = channalProgress;
         return view;
     }
 
