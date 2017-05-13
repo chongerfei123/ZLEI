@@ -37,7 +37,7 @@ public class MainActivity extends BaseActivity<MainActivityInterface, MainPresen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        ButterKnife.bind(this);//
         FragmentManager fm = getSupportFragmentManager();
         MainPagerAdapter mainPagerAdapter = new MainPagerAdapter(fm);
         mainViewPager.setAdapter(mainPagerAdapter);
