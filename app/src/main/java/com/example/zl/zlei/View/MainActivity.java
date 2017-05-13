@@ -36,7 +36,6 @@ public class MainActivity extends BaseActivity<MainActivityInterface, MainPresen
     private NewsFragment newsFragment;
     private JokesFragment jokesFragment;
     private FragmentManager fragmentManager;
-    private TopFragment topFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,15 +43,6 @@ public class MainActivity extends BaseActivity<MainActivityInterface, MainPresen
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         FragmentInit();
-    }
-
-    private void dismismRadioGroup() {
-        for (int i = 0; i < 1; i++) {
-            TranslateAnimation translate = new TranslateAnimation(0, 0, 0, radioGroup.getHeight());
-            translate.setFillAfter(true);
-            translate.setDuration(1000);
-            radioGroup.startAnimation(translate);
-        }
     }
 
     @OnClick(R.id.radioButton_news)
@@ -69,7 +59,6 @@ public class MainActivity extends BaseActivity<MainActivityInterface, MainPresen
 
 
     private void FragmentInit() {
-        topFragment = new TopFragment();
         newsFragment = new NewsFragment();
         jokesFragment = new JokesFragment();
         fragmentManager = getSupportFragmentManager();
