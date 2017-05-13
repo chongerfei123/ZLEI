@@ -1,7 +1,10 @@
 package com.example.zl.zlei.Present;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 
 import com.example.zl.zlei.Modle.acti.MainModleImp;
 import com.example.zl.zlei.Modle.acti.SearchAvtivityModle;
@@ -14,6 +17,7 @@ import com.example.zl.zlei.adapter.SearchMultyItemBean;
 import com.example.zl.zlei.listener.OnSearchDataListener;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -35,6 +39,7 @@ public class SearchActivityPresent extends BasePresenter<SearchActivityInterface
 
     public void loadData(String searchContent, final String appkey, final OnSearchDataListener onSearchDataListener) {
         activity.showProgressBar();
+        activity.showHistoryrecord();
         Observable<ArrayList<SearchMultyItemBean>> observable = modle.loadData(searchContent, appkey);
         observable.subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Subscriber<ArrayList<SearchMultyItemBean>>() {
             @Override
@@ -57,5 +62,13 @@ public class SearchActivityPresent extends BasePresenter<SearchActivityInterface
                 activity.hideError();
             }
         });
+    }
+
+    public void memoryHistory(String searchContent) {
+        modle.memoryHistory(searchContent, (SearchActivity) activity);
+    }
+
+    public void removehistoryInSP() {
+        modle.removehistoryInSP((SearchActivity) activity);
     }
 }

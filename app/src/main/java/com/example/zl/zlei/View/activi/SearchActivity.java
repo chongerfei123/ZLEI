@@ -1,6 +1,7 @@
 package com.example.zl.zlei.View.activi;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -33,6 +34,7 @@ import com.example.zl.zlei.listener.OnSearchDataListener;
 import com.example.zl.zlei.others.SpaceItemDecoration;
 
 import java.util.ArrayList;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,7 +59,11 @@ public class SearchActivity extends BaseActivity<SearchActivityInterface, Search
     RelativeLayout errorView;
     @BindView(R.id.main_tool_icon)
     ImageButton mainToolIcon;
+    @BindView(R.id.history_button)
+    ImageButton historyButton;
     private SearchRecyclerAdapter searchRecyclerAdapter;
+    private ArrayList<String> historyData;
+    private HomeAdapter homeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +72,18 @@ public class SearchActivity extends BaseActivity<SearchActivityInterface, Search
         ButterKnife.bind(this);
 
         init();
+        homeAdapter.setOnItemClickListener(new HomeAdapter.OnItemClickListener() {
+            @Override
+            public void onItenClick(View view, int position) {
+                searchEdit.setText(historyData.get(position));
+                //Toast.makeText(SearchActivity.this, "条目被点击"+position, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onItenLongClick(View view, int position) {
+               // Toast.makeText(SearchActivity.this, "条目被长点击"+position, Toast.LENGTH_SHORT).show();
+            }
+        });
         searchEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -85,8 +103,8 @@ public class SearchActivity extends BaseActivity<SearchActivityInterface, Search
                     searchEdit.setOnEditorActionListener(new EditText.OnEditorActionListener() {
                         @Override
                         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                            if (actionId == EditorInfo.IME_ACTION_SEARCH){
-                                Log.e("sout","软键盘监听");
+                            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                                //Log.e("sout","软键盘监听");
                                 searchData();
                                 //收起键盘
                                 InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -118,18 +136,31 @@ public class SearchActivity extends BaseActivity<SearchActivityInterface, Search
                 finish();
             }
         });
-
+        historyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int size = historyData.size();
+                historyData.clear();
+               // homeAdapter.notifyItemMoved(0,size);
+                homeAdapter.notifyDataSetChanged();
+                mPresenter.removehistoryInSP();
+            }
+        });
     }
 
     private void searchData() {
         String searchContent = searchEdit.getText().toString().trim();
-        // TODO: 2017/5/12 存储搜索记录
-
+        mPresenter.memoryHistory(searchContent);
+        if (!historyData.contains(searchContent)) {
+            historyData.add(0, searchContent);
+            homeAdapter.notifyItemInserted(0);
+            homeAdapter.notifyItemRangeChanged(0, historyData.size());
+        }
         Toast.makeText(SearchActivity.this, "开始加载", Toast.LENGTH_SHORT).show();
         mPresenter.loadData(searchContent, Global.APPKEY, new OnSearchDataListener() {
             @Override
             public void OnSucceed(ArrayList<SearchMultyItemBean> data) {
-               // Log.e("sout", "加载成功--SearchActivity");
+                // Log.e("sout", "加载成功--SearchActivity");
                 searchRecyclerAdapter.setNewData(data);
                 //Log.e("sout", "setData成功--SearchActivity");
                 Toast.makeText(SearchActivity.this, "加载成功", Toast.LENGTH_SHORT).show();
@@ -157,8 +188,20 @@ public class SearchActivity extends BaseActivity<SearchActivityInterface, Search
         searchRecyclerView.setVisibility(View.INVISIBLE);
         historyRecyclerView.setVisibility(View.VISIBLE);
         llHistory.setVisibility(View.VISIBLE);
-        historyRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
-        historyRecyclerView.setAdapter(new HomeAdapter(this));
+        historyRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+        //historyRecyclerView.addItemDecoration(new SpaceItemDecoration(15));
+        SharedPreferences preferences = this.getSharedPreferences("search_history", MODE_PRIVATE);
+        Set<String> history = preferences.getStringSet("history", null);
+        historyData = new ArrayList<>();
+        if (history != null) {
+            for (String s : history) {
+                historyData.add(s);
+            }
+            Log.e("sout", "取SearchActivity--" + history.size());
+            Log.e("sout", "historyData取SearchActivity--" + historyData.size());
+        }
+        homeAdapter = new HomeAdapter(this, historyData);
+        historyRecyclerView.setAdapter(homeAdapter);
         errorView.setVisibility(View.GONE);
     }
 
@@ -181,6 +224,7 @@ public class SearchActivity extends BaseActivity<SearchActivityInterface, Search
 
     @Override
     public void showError() {
+        historyRecyclerView.setVisibility(View.INVISIBLE);
         llHistory.setVisibility(View.INVISIBLE);
         searchRecyclerView.setVisibility(View.INVISIBLE);
         searchProgressBar.setVisibility(View.GONE);
@@ -198,5 +242,13 @@ public class SearchActivity extends BaseActivity<SearchActivityInterface, Search
         historyRecyclerView.setVisibility(View.GONE);
         llHistory.setVisibility(View.GONE);
         searchRecyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showHistoryrecord() {
+        historyRecyclerView.setVisibility(View.VISIBLE);
+        llHistory.setVisibility(View.VISIBLE);
+        searchRecyclerView.setVisibility(View.INVISIBLE);
+        errorView.setVisibility(View.GONE);
     }
 }

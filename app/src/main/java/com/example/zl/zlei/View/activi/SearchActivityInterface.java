@@ -11,5 +11,6 @@ public interface SearchActivityInterface {
     void showError();
     void hideError();
     void hideHistoryrecord();
+    void showHistoryrecord();
 
 }

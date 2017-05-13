@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="main_tool_text">#f7f8f9</color>
     <color name="search_edit">#ccd3da</color>
+    <color name="history_border">#505050</color>
 </resources>
