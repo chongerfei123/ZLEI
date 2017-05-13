@@ -1,5 +1,7 @@
 package com.example.zl.zlei.Modle.frg;
 
+import android.content.Context;
+
 import com.example.zl.zlei.adapter.MultyItemBean;
 
 import java.util.ArrayList;
@@ -15,4 +17,5 @@ public interface ChannalModle {
 
      Observable<ArrayList<MultyItemBean>> loadData(String channel, int start, int num, String appkey);
 
+    boolean checkNetIsOK(Context context);
 }

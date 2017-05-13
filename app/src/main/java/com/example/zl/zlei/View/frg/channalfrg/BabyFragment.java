@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.zl.zlei.R;
 import com.example.zl.zlei.adapter.MyRecyclerAdapter;
@@ -29,6 +30,8 @@ public class BabyFragment extends TopFragment {
     RelativeLayout errorView;
     @BindView(R.id.channal_progress)
     ProgressBar channalProgress;
+    @BindView(R.id.noNetView)
+    TextView noNetView;
 
     @Nullable
     @Override
@@ -41,6 +44,8 @@ public class BabyFragment extends TopFragment {
         super.swipeRefreshLayout = swipeRefreshLayout;
         super.errorView = errorView;
         super.channalProgress = channalProgress;
+        super.noNetView = noNetView;
         return view;
     }
+
 }

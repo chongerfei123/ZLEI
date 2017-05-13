@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -50,6 +51,7 @@ public class TopFragment extends BaseFragment<ChannalFragmentInterface, ChannalF
     private OnScrollListener scrollListener;
     public RelativeLayout errorView;
     public ProgressBar channalProgress;
+    public TextView noNetView;
 
     @Nullable
     @Override
@@ -61,6 +63,7 @@ public class TopFragment extends BaseFragment<ChannalFragmentInterface, ChannalF
         swipeRefreshLayout = null;
         errorView = null;
         channalProgress = null;
+        noNetView = null;
         return view;
     }
 
@@ -69,8 +72,15 @@ public class TopFragment extends BaseFragment<ChannalFragmentInterface, ChannalF
 
         //对adapter、swipeRefreshLayout、recyclerView的初始化
         initRecAndAda();
-        //初始第一次加载数据
-        firstLoadData();
+
+        // 检查是否有网络连接
+        if (mfragmentPresenter.checkNetIsOK(getContext())) {
+            //初始第一次加载数据
+            firstLoadData();
+        }else {
+            noNetView.setVisibility(View.VISIBLE);
+        }
+
         //上拉加载更多
         loadMoreData();
         //下拉刷新

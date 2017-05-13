@@ -4,8 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/noNetView"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="好像没有网络。。。"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
     <RelativeLayout
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/errorView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -21,17 +29,19 @@
             android:textSize="18sp"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/iv"
-            android:text="并没有搜索到..."
+            android:text="并没有加载到..."
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </RelativeLayout>
     <ProgressBar
+        android:visibility="gone"
         android:id="@+id/channal_progress"
         android:layout_marginTop="140dp"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <android.support.v4.widget.SwipeRefreshLayout
+        android:visibility="gone"
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">

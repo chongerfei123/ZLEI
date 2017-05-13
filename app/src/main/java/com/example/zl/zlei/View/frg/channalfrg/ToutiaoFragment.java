@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.example.zl.zlei.R;
 import com.example.zl.zlei.adapter.MyRecyclerAdapter;
@@ -30,11 +31,13 @@ public class ToutiaoFragment extends TopFragment {
     RelativeLayout errorView;
     @BindView(R.id.channal_progress)
     ProgressBar channalProgress;
+    @BindView(R.id.noNetView)
+    TextView noNetView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.top, container, false);
+        View view = inflater.inflate(R.layout.baby, container, false);
         super.unbinder = ButterKnife.bind(this, view);
         super.adapter = new MyRecyclerAdapter(null);
         super.recyclerView = this.recyclerView;
@@ -42,6 +45,8 @@ public class ToutiaoFragment extends TopFragment {
         super.swipeRefreshLayout = swipeRefreshLayout;
         super.errorView = errorView;
         super.channalProgress = channalProgress;
+        super.noNetView = noNetView;
+
         return view;
     }
 }

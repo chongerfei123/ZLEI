@@ -1,5 +1,8 @@
 package com.example.zl.zlei.Modle.frg;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.example.zl.zlei.adapter.MultyItemBean;
@@ -28,16 +31,16 @@ public class ChannalModleImp implements ChannalModle {
             @Override
             public void call(final Subscriber<? super ArrayList<MultyItemBean>> subscriber) {
                 OkhttpUtil okhttpUtil = OkhttpUtil.getInstance();
-                okhttpUtil.getJson(channel,start,num,appkey, new LoadJsonListener() {
+                okhttpUtil.getJson(channel, start, num, appkey, new LoadJsonListener() {
                     @Override
                     public void OnSucceed(String json) {
                         List<DataBean.ResultBean.ListBean> list = parseJson(json);
                         ArrayList<MultyItemBean> data = convert(list);
-                        if (data != null){
+                        if (data != null) {
                             subscriber.onNext(data);
                             subscriber.onCompleted();
-                        }else{
-                            Log.e("sout","data为空");
+                        } else {
+                            Log.e("sout", "data为空");
                         }
 
                     }
@@ -45,7 +48,7 @@ public class ChannalModleImp implements ChannalModle {
                     @Override
                     public void OnError(Exception e) {
                         subscriber.onError(e);
-                        Log.e("sout","加载数据错误");
+                        Log.e("sout", "加载数据错误");
                     }
                 });
             }
@@ -53,14 +56,27 @@ public class ChannalModleImp implements ChannalModle {
         return observable;
     }
 
+    @Override
+    public boolean checkNetIsOK(Context context) {
+        if (context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mNetworkInfo != null) {
+                return mNetworkInfo.isAvailable();
+            }
+        }
+        return false;
+    }
+
     private ArrayList<MultyItemBean> convert(List<DataBean.ResultBean.ListBean> list) {
 
         ArrayList<MultyItemBean> data = new ArrayList<>();
         for (DataBean.ResultBean.ListBean bean : list) {
-            if (bean.getPic().equals("")){
-                data.add(new MultyItemBean(MultyItemBean.TYPE2_nopic,bean));
-            }else {
-                data.add(new MultyItemBean(MultyItemBean.TYPE_pic,bean));
+            if (bean.getPic().equals("")) {
+                data.add(new MultyItemBean(MultyItemBean.TYPE2_nopic, bean));
+            } else {
+                data.add(new MultyItemBean(MultyItemBean.TYPE_pic, bean));
             }
 
         }
@@ -72,10 +88,10 @@ public class ChannalModleImp implements ChannalModle {
         Gson gson = new Gson();
         DataBean dataBean = gson.fromJson(json, DataBean.class);
         String status = dataBean.getStatus();
-        if (status.equals("0")){
+        if (status.equals("0")) {
             list = dataBean.getResult().getList();
-        }else {
-            Log.e("sout","解析Json错误:"+dataBean.getMsg());
+        } else {
+            Log.e("sout", "解析Json错误:" + dataBean.getMsg());
         }
         return list;
     }

@@ -1,5 +1,7 @@
 package com.example.zl.zlei.Present;
 
+import android.content.Context;
+
 import com.example.zl.zlei.Modle.frg.ChannalModle;
 import com.example.zl.zlei.Modle.frg.ChannalModleImp;
 import com.example.zl.zlei.View.frg.NewsFragmentInterface;
@@ -48,5 +50,9 @@ public class ChannalFragmentPresent extends BasePresenter<ChannalFragmentInterfa
                 fragment.showView();
             }
         });
+    }
+
+    public boolean checkNetIsOK(Context context) {
+        return modle.checkNetIsOK(context);
     }
 }
