@@ -1,49 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".View.MainActivity"
-    android:orientation="vertical"
-    >
-    <FrameLayout
-        android:id="@+id/frameLayout_fragment"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        />
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:id="@+id/linearLayout"
-        >
-        <RadioGroup
-            android:id="@+id/radioGroup"
+        android:layout_height="match_parent">
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/main_tab"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:elevation="20dp"
+            android:translationZ="15dp"
+            app:tabIndicatorColor="@null" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/main_viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <RadioButton
-                android:id="@+id/radioButton_news"
-                 android:button="@null"
-                android:drawableTop="@drawable/radiobutton_news_32px"
-                android:gravity="center"
-                android:text="@string/radioButton_news"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent" />
+            android:layout_above="@+id/main_tab" />
 
-            <RadioButton
-                android:id="@+id/radioButton_jokes"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:button="@null"
-                android:drawableTop="@drawable/radiobutton_jokes_32px"
-                android:gravity="center"
-                android:text="@string/radioButton_jokes" />
-        </RadioGroup>
-    </LinearLayout>
-</LinearLayout>
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>
