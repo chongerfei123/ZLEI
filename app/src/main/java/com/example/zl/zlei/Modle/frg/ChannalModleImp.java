@@ -84,6 +84,7 @@ public class ChannalModleImp implements ChannalModle {
     }
 
     private List<DataBean.ResultBean.ListBean> parseJson(String json) {
+        // TODO: 2017/5/13 次数yongwanl jiushantui，因为解析不json
         List<DataBean.ResultBean.ListBean> list = null;
         Gson gson = new Gson();
         DataBean dataBean = gson.fromJson(json, DataBean.class);
