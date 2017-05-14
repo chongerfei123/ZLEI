@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
  * Created by zl on 2017/5/8.
  */
 
-public class SharesFragment extends TopFragment {
+public class SharesFragment extends ChannalFragment {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.swipeRefreshLayout)

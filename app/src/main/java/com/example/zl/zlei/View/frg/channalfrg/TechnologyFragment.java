@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
  * Created by zl on 2017/5/8.
  */
 
-public class TechnologyFragment extends TopFragment {
+public class TechnologyFragment extends ChannalFragment {
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
     @BindView(R.id.swipeRefreshLayout)

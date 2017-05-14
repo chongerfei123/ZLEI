@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
  * Created by zl on 2017/5/9.
  */
 
-public class ToutiaoFragment extends TopFragment {
+public class ToutiaoFragment extends ChannalFragment {
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;

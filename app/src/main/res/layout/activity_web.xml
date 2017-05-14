@@ -1,9 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     tools:context="com.example.zl.zlei.View.activi.WebActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:isScrollContainer="true"
+            app:navigationIcon="@drawable/fab_add"
+            android:id="@+id/toolbarInweb"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" >
+
+            <TextView
+                android:id="@+id/tool_srctext"
+                android:text="xxxx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <include layout="@layout/content_web" />
+
+    <TextView
+        android:visibility="invisible"
+        android:id="@+id/fab_mengban"
+        android:background="@color/colorAccent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RelativeLayout
+        android:id="@+id/floatingParent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.github.clans.fab.FloatingActionMenu
+            fab:menu_openDirection="up"
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="45dp"
+            android:layout_marginStart="15dp"
+            app:menu_colorNormal="@color/colorAccent"
+            app:menu_colorPressed="@color/colorAccentDark"
+            app:menu_icon="@android:drawable/ic_input_add"
+            app:menu_labels_ellipsize="end"
+            app:menu_labels_singleLine="true"
+            fab:menu_labels_position="right"
+            >
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_share"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_colorNormal="@color/colorAccent"
+                app:fab_colorPressed="@color/colorAccentDark"
+                android:src="@drawable/xx"
+                app:fab_size="mini"
+                app:fab_label="分享"
+                />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_upload"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_colorNormal="@color/colorAccent"
+                app:fab_colorPressed="@color/colorAccentDark"
+                android:src="@drawable/xx"
+                app:fab_size="mini"
+                app:fab_label="上传"
+                />
+
+            <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/fab_preview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fab_colorNormal="@color/colorAccent"
+                app:fab_colorPressed="@color/colorAccentDark"
+                android:src="@drawable/xx"
+                app:fab_size="mini"
+                app:fab_label="预览"
+                />
+        </com.github.clans.fab.FloatingActionMenu>
+    </RelativeLayout>
+
+
+
+</android.support.design.widget.CoordinatorLayout>

@@ -3,29 +3,20 @@ package com.example.zl.zlei.View;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPropertyAnimatorCompat;
-import android.support.v4.widget.AutoScrollHelper;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
+import android.view.Menu;
 import android.view.ViewPropertyAnimator;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 
 import com.example.zl.zlei.Present.MainPresent;
 import com.example.zl.zlei.R;
-import com.example.zl.zlei.View.activi.BaseActivity;
+import com.example.zl.zlei.View.activi.BaseFragmentActivity;
 import com.example.zl.zlei.View.activi.MainActivityInterface;
-import com.example.zl.zlei.View.frg.JokesFragment;
-import com.example.zl.zlei.View.frg.NewsFragment;
 import com.example.zl.zlei.adapter.MainPagerAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity<MainActivityInterface, MainPresent> implements MainActivityInterface {
+public class MainActivity extends BaseFragmentActivity<MainActivityInterface, MainPresent> implements MainActivityInterface {
 
     @BindView(R.id.main_tab)
     TabLayout mainTab;

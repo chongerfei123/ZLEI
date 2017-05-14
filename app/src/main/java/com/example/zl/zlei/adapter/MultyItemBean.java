@@ -15,7 +15,7 @@ import okhttp3.Address;
 public class MultyItemBean extends MultiItemEntity{
     public static int TYPE_pic = 1;
     public static int TYPE2_nopic = 2;
-    DataBean.ResultBean.ListBean bean;
+    public DataBean.ResultBean.ListBean bean;
     private int type;
     public MultyItemBean(DataBean.ResultBean.ListBean bean) {
         super();

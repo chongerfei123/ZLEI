@@ -12,7 +12,7 @@ import com.example.zl.zlei.Present.BasePresenter;
  * Created by zl on 2017/4/24.
  */
 
-public abstract class BaseActivity<V,T extends BasePresenter<V>> extends FragmentActivity{
+public abstract class BaseFragmentActivity<V,T extends BasePresenter<V>> extends FragmentActivity{
     protected T mPresenter;
 
     @Override

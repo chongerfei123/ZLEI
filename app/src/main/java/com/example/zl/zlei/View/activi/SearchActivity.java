@@ -39,7 +39,7 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class SearchActivity extends BaseActivity<SearchActivityInterface, SearchActivityPresent> implements SearchActivityInterface {
+public class SearchActivity extends BaseAppCompatActivity<SearchActivityInterface, SearchActivityPresent> implements SearchActivityInterface {
 
     @BindView(R.id.search_recyclerView)
     RecyclerView searchRecyclerView;

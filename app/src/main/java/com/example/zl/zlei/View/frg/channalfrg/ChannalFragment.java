@@ -1,5 +1,6 @@
 package com.example.zl.zlei.View.frg.channalfrg;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.zl.zlei.Present.ChannalFragmentPresent;
 import com.example.zl.zlei.View.MainActivity;
+import com.example.zl.zlei.View.activi.WebActivity;
 import com.example.zl.zlei.View.frg.BaseFragment;
 import com.example.zl.zlei.adapter.MultyItemBean;
 import com.example.zl.zlei.adapter.MyRecyclerAdapter;
@@ -25,7 +27,9 @@ import com.example.zl.zlei.listener.OnDataListener;
 import com.example.zl.zlei.listener.OnScrollListener;
 import com.example.zl.zlei.others.SpaceItemDecoration;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Unbinder;
 
@@ -33,7 +37,7 @@ import butterknife.Unbinder;
  * Created by zl on 2017/5/8.
  */
 
-public class TopFragment extends BaseFragment<ChannalFragmentInterface, ChannalFragmentPresent> implements ChannalFragmentInterface {
+public class ChannalFragment extends BaseFragment<ChannalFragmentInterface, ChannalFragmentPresent> implements ChannalFragmentInterface {
 
     RecyclerView recyclerView;
     Unbinder unbinder;
@@ -81,6 +85,24 @@ public class TopFragment extends BaseFragment<ChannalFragmentInterface, ChannalF
         //删除Item
         deleteItem();
 
+        adapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, int i) {
+                Intent intent = new Intent(getActivity(), WebActivity.class);
+                MultyItemBean item = (MultyItemBean) adapter.getItem(i);
+                String src = item.bean.getSrc();
+                String url = null;
+                if (item.bean.getUrl().equals("") || item.bean.getUrl().contains("jpg?siz")) {
+                    url = item.bean.getWeburl();
+                }else {
+                    url = item.bean.getUrl();
+                }
+                intent.putExtra("src",src);
+                intent.putExtra("url",url);
+                startActivity(intent);
+            }
+        });
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -122,7 +144,7 @@ public class TopFragment extends BaseFragment<ChannalFragmentInterface, ChannalF
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mfragmentPresenter.loadData(channal,0, Global.NUM,Global.APPKEY,new OnDataListener(){
+                mfragmentPresenter.loadData(false,channal,0, Global.NUM,Global.APPKEY,new OnDataListener(){
                     @Override
                     public void OnSucceed(ArrayList<MultyItemBean> data) {
                         adapter.setNewData(data);
@@ -146,7 +168,7 @@ public class TopFragment extends BaseFragment<ChannalFragmentInterface, ChannalF
         adapter.setOnLoadMoreListener(10,new BaseQuickAdapter.RequestLoadMoreListener() {
             @Override
             public void onLoadMoreRequested() {
-                mfragmentPresenter.loadData(channal,currentNum, Global.NUM,Global.APPKEY,new OnDataListener(){
+                mfragmentPresenter.loadData(false,channal,currentNum, Global.NUM,Global.APPKEY,new OnDataListener(){
                     @Override
                     public void OnSucceed(ArrayList<MultyItemBean> data) {
                         currentNum = currentNum + Global.NUM;
@@ -158,6 +180,7 @@ public class TopFragment extends BaseFragment<ChannalFragmentInterface, ChannalF
                     @Override
                     public void OnError() {
                         Log.e("sout","加载更多错误");
+                        // TODO: 2017/5/14 添加一个加载更多错误的尾部局
                     }
                 });
             }
@@ -165,7 +188,7 @@ public class TopFragment extends BaseFragment<ChannalFragmentInterface, ChannalF
     }
 
     private void firstLoadData() {
-        mfragmentPresenter.loadData(channal,0, Global.NUM,Global.APPKEY,new OnDataListener(){
+        mfragmentPresenter.loadData(true,channal,0, Global.NUM,Global.APPKEY,new OnDataListener(){
             @Override
             public void OnSucceed(ArrayList<MultyItemBean> data) {
                 adapter.setNewData(data);
