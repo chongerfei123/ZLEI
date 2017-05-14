@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.example.zl.zlei.Modle.acti.MainModle;
 import com.example.zl.zlei.Modle.acti.MainModleImp;
 import com.example.zl.zlei.View.activi.MainActivityInterface;
 
@@ -15,9 +16,9 @@ import com.example.zl.zlei.View.activi.MainActivityInterface;
 
 public class MainPresent extends BasePresenter<MainActivityInterface> {
     private MainActivityInterface newsViewActivity;
-    private MainModleImp mainModleImp;
+    private MainModle modle;
     public MainPresent(MainActivityInterface newsViewActivity) {
         this.newsViewActivity = newsViewActivity;
-        mainModleImp = new MainModleImp();
+        modle = new MainModleImp();
     }
 }

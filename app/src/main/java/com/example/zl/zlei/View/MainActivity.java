@@ -58,8 +58,6 @@ public class MainActivity extends BaseActivity<MainActivityInterface, MainPresen
             animate.start();
             mainTabState = true;
         }
-
-
     }
     public void tabComing() {
         if (mainTabState){
