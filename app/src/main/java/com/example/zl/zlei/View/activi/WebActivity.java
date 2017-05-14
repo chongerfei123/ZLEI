@@ -300,15 +300,19 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            String url = webView.getUrl();
-            if (webView.canGoBack()) {
-                webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
-                webView.goBack();
+            if (!fabToggleState){
+                if (webView.canGoBack()) {
+                    webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
+                    webView.goBack();
+                    return false;
+                } else {
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                    return true;
+                }
+            }else {
+                fab.toggle(false);
                 return false;
-            } else {
-                Intent intent = new Intent(this, MainActivity.class);
-                startActivity(intent);
-                return true;
             }
         }
         return super.onKeyDown(keyCode, event);
