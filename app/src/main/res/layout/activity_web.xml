@@ -21,11 +21,36 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" >
 
-            <TextView
-                android:id="@+id/tool_srctext"
-                android:text="xxxx"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical">
+                <TextView
+                    android:gravity="center"
+                    android:id="@+id/tool_srctext"
+                    android:text="xxxx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <ImageButton
+                    android:id="@+id/setting_button"
+                    android:layout_marginEnd="10dp"
+                    android:background="@null"
+                    android:src="@drawable/xx"
+                    android:layout_alignParentEnd="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <ImageButton
+                    android:id="@+id/shares_button"
+                    android:layout_marginEnd="20dp"
+                    android:layout_toStartOf="@+id/setting_button"
+                    android:background="@null"
+                    android:src="@drawable/xx"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </RelativeLayout>
+
 
         </android.support.v7.widget.Toolbar>
 
@@ -42,6 +67,7 @@
         android:layout_height="match_parent" />
 
     <RelativeLayout
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:id="@+id/floatingParent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -70,7 +96,7 @@
                 app:fab_colorPressed="@color/colorAccentDark"
                 android:src="@drawable/xx"
                 app:fab_size="mini"
-                app:fab_label="分享"
+                app:fab_label="刷新"
                 />
 
             <com.github.clans.fab.FloatingActionButton
@@ -81,7 +107,7 @@
                 app:fab_colorPressed="@color/colorAccentDark"
                 android:src="@drawable/xx"
                 app:fab_size="mini"
-                app:fab_label="上传"
+                app:fab_label="收藏"
                 />
 
             <com.github.clans.fab.FloatingActionButton
@@ -92,11 +118,136 @@
                 app:fab_colorPressed="@color/colorAccentDark"
                 android:src="@drawable/xx"
                 app:fab_size="mini"
-                app:fab_label="预览"
+                app:fab_label="分享"
                 />
         </com.github.clans.fab.FloatingActionMenu>
+
+        <RelativeLayout
+            android:background="@color/history_border"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_alignParentBottom="true">
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:id="@+id/ziti"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:textSize="20sp"
+                    android:paddingStart="10dp"
+                    android:gravity="center"
+                    android:background="@null"
+                    android:text="A-"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+                <SeekBar
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:textSize="20sp"
+                    android:paddingEnd="5dp"
+                    android:gravity="center"
+                    android:background="@null"
+                    android:text="A+"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+                <RadioButton
+                    android:textColor="@color/history_border"
+                    android:text="默认"
+                    android:paddingEnd="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:id="@+id/liangdu"
+                android:layout_below="@+id/ziti"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageButton
+                    android:src="@mipmap/ic_launcher_round"
+                    android:textSize="20sp"
+                    android:paddingStart="10dp"
+                    android:gravity="center"
+                    android:background="@null"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+                <SeekBar
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+                <ImageButton
+                    android:src="@mipmap/ic_launcher_round"
+                    android:textSize="20sp"
+                    android:paddingEnd="5dp"
+                    android:gravity="center"
+                    android:background="@null"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+                <RadioButton
+                    android:textColor="@color/history_border"
+                    android:text="系统"
+                    android:paddingEnd="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+
+            <View
+                android:layout_centerVertical="true"
+                android:id="@+id/line"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
+                android:background="@color/history_border"
+                android:layout_marginTop="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"/>
+
+            <RadioGroup
+                android:layout_marginBottom="10dp"
+                android:layout_alignParentBottom="true"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:gravity="center"
+                    android:drawableTop="@mipmap/ic_launcher_round"
+                    android:button="@null"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:text="无图模式"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+                <RadioButton
+                    android:gravity="center"
+                    android:drawableTop="@mipmap/ic_launcher_round"
+                    android:button="@null"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:text="刷新"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+                <RadioButton
+                    android:gravity="center"
+                    android:drawableTop="@mipmap/ic_launcher_round"
+                    android:button="@null"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:text="转屏"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+            </RadioGroup>
+        </RelativeLayout>
+
     </RelativeLayout>
-
-
 
 </android.support.design.widget.CoordinatorLayout>

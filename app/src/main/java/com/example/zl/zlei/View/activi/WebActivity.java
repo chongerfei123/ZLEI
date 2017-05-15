@@ -4,14 +4,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
@@ -19,6 +20,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -28,6 +30,7 @@ import android.widget.Toast;
 import com.example.zl.zlei.Present.WebActivityPresent;
 import com.example.zl.zlei.R;
 import com.example.zl.zlei.View.MainActivity;
+import com.example.zl.zlei.others.activityBrightnessManager;
 import com.github.clans.fab.FloatingActionMenu;
 
 import butterknife.BindView;
@@ -49,6 +52,10 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     ProgressBar progress;
     @BindView(R.id.floatingParent)
     RelativeLayout floatingParent;
+    @BindView(R.id.setting_button)
+    ImageButton settingButton;
+    @BindView(R.id.shares_button)
+    ImageButton sharesButton;
     private WebView webView;
     private String src = null;
     private String url = null;
@@ -61,6 +68,33 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         setContentView(R.layout.activity_web);
         ButterKnife.bind(this);
         init();
+
+//        sharesButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                float brightness = activityBrightnessManager.getActivityBrightness(WebActivity.this);
+//                Log.e("sout",""+brightness);
+//                brightness += 0.1;
+//                if (brightness > 1.0){
+//                    brightness = 1.0f;
+//                }
+//                activityBrightnessManager.setActivityBrightness(brightness,WebActivity.this);
+//            }
+//        });
+//        settingButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                float brightness = activityBrightnessManager.getActivityBrightness(WebActivity.this);
+//                Log.e("sout",""+brightness);
+//                brightness -= 0.1;
+//                if (brightness < 0){
+//                    brightness = -1.0f;
+//                }
+//                Log.e("sout",""+brightness);
+//                activityBrightnessManager.setActivityBrightness(brightness,WebActivity.this);
+//            }
+//        });
+
         toolbarInweb.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,7 +107,6 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
                 }
             }
         });
-
         decideMengBanShouldComing();
         Log.e("sout", "onCreate");
         Intent intent = getIntent();
@@ -122,28 +155,6 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     @Override
     protected WebActivityPresent createPresenter() {
         return new WebActivityPresent(this);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_web, menu);
-        return true;
     }
 
     @Override
@@ -264,8 +275,8 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 int action = event.getAction();
-                if (action  == MotionEvent.ACTION_DOWN||action  == MotionEvent.ACTION_MOVE){
-                    if (fabToggleState){
+                if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE) {
+                    if (fabToggleState) {
                         fab.toggle(false);
                     }
                 }
@@ -300,7 +311,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (!fabToggleState){
+            if (!fabToggleState) {
                 if (webView.canGoBack()) {
                     webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
                     webView.goBack();
@@ -310,13 +321,11 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
                     startActivity(intent);
                     return true;
                 }
-            }else {
+            } else {
                 fab.toggle(false);
                 return false;
             }
         }
         return super.onKeyDown(keyCode, event);
     }
-
-
 }
