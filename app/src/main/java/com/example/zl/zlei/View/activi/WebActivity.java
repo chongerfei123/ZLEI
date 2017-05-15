@@ -1,19 +1,26 @@
 package com.example.zl.zlei.View.activi;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewPropertyAnimatorCompat;
+import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -30,7 +37,6 @@ import android.widget.Toast;
 import com.example.zl.zlei.Present.WebActivityPresent;
 import com.example.zl.zlei.R;
 import com.example.zl.zlei.View.MainActivity;
-import com.example.zl.zlei.others.activityBrightnessManager;
 import com.github.clans.fab.FloatingActionMenu;
 
 import butterknife.BindView;
@@ -56,11 +62,15 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     ImageButton settingButton;
     @BindView(R.id.shares_button)
     ImageButton sharesButton;
+    @BindView(R.id.settingView)
+    RelativeLayout settingView;
     private WebView webView;
     private String src = null;
     private String url = null;
     private WebSettings webSettings;
     private boolean fabToggleState;
+    private boolean settingViewState = true;
+    private boolean settingViewopenFirst = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +78,25 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         setContentView(R.layout.activity_web);
         ButterKnife.bind(this);
         init();
+        settingView.setVisibility(View.INVISIBLE);
+        settingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (settingViewopenFirst){
+                    settingView.setVisibility(View.VISIBLE);
+                    settingViewopenFirst = false;
+                }else {
+                    if (settingViewState) {
+                        closeSettingView();
+                        settingViewState = false;
+                    } else {
+                        openSettingView();
+                        settingViewState = true;
+                    }
+                }
+
+            }
+        });
 
 //        sharesButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -113,6 +142,29 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         src = intent.getStringExtra("src");
         url = intent.getStringExtra("url");
         Log.e("sout", src + "--" + url);
+
+    }
+
+
+    private void openSettingView() {
+//        settingView
+        Log.e("sout","openSettingView");
+        ViewPropertyAnimatorCompat animate = ViewCompat.animate(settingView);
+        animate.translationY(0);
+        animate.setDuration(300);
+        AccelerateInterpolator interpolator = new AccelerateInterpolator(2f);
+        animate.setInterpolator(interpolator);
+        animate.start();
+    }
+
+    private void closeSettingView() {
+        Log.e("sout","closeSettingView");
+        ViewPropertyAnimatorCompat animate = ViewCompat.animate(settingView);
+        animate.translationY(settingView.getHeight());
+        animate.setDuration(300);
+        AccelerateInterpolator interpolator = new AccelerateInterpolator(2f);
+        animate.setInterpolator(interpolator);
+        animate.start();
     }
 
     private void init() {
@@ -200,7 +252,6 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     @Override
     protected void onResume() {
         super.onResume();
-
         progress.setProgress(0);
         progress.setVisibility(View.VISIBLE);
         webView = new WebView(this);
@@ -232,7 +283,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
-                Log.e("sout", "" + newProgress);
+               // Log.e("sout", "" + newProgress);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     progress.setProgress(newProgress, true);
                 } else {
@@ -266,7 +317,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
                 //加载完成
                 progress.setVisibility(View.GONE);
                 webSettings.setBlockNetworkImage(false);
-                Log.e("sout", "GONE了");
+              //  Log.e("sout", "GONE了");
                 Toast.makeText(WebActivity.this, "加载完成", Toast.LENGTH_SHORT).show();
             }
         });
@@ -278,6 +329,10 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
                 if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_MOVE) {
                     if (fabToggleState) {
                         fab.toggle(false);
+                    }
+                    if (settingViewState){
+                        closeSettingView();
+                        settingViewState = false;
                     }
                 }
                 return false;
