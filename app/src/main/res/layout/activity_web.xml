@@ -249,6 +249,8 @@
                 android:orientation="horizontal">
 
                 <RadioButton
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
+                    android:id="@+id/isHaveImageButton"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
@@ -259,6 +261,8 @@
                     android:text="无图模式" />
 
                 <RadioButton
+                    android:id="@+id/fresh"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
@@ -269,6 +273,8 @@
                     android:text="刷新" />
 
                 <RadioButton
+                    android:id="@+id/rotate"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"

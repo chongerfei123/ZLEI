@@ -1,7 +1,10 @@
 package com.example.zl.zlei.View.activi;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
@@ -25,6 +28,7 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -34,6 +38,7 @@ import com.example.zl.zlei.Present.WebActivityPresent;
 import com.example.zl.zlei.R;
 import com.example.zl.zlei.View.MainActivity;
 import com.example.zl.zlei.others.activityBrightnessManager;
+import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
 import butterknife.BindView;
@@ -77,6 +82,14 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     SeekBar light_seekBar;
     @BindView(R.id.light_default)
     CheckBox lightDefault;
+    @BindView(R.id.isHaveImageButton)
+    RadioButton isHaveImageButton;
+    @BindView(R.id.fresh)
+    RadioButton fresh;
+    @BindView(R.id.fab_share)
+    FloatingActionButton fabShare;
+    @BindView(R.id.rotate)
+    RadioButton rotate;
     private WebView webView;
     private String src = null;
     private String url = null;
@@ -84,6 +97,8 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     private boolean fabToggleState;
     private boolean settingViewState = true;
     private boolean settingViewopenFirst = true;
+    private boolean closeLoadImage = false;
+    private static boolean isSrceenPORTRAIT = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,10 +107,61 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         ButterKnife.bind(this);
         init();
 
+        rotate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isSrceenPORTRAIT){
+                    //切换横屏
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+                    isSrceenPORTRAIT = false;
+                    //Log.e("sout","切换横屏--"+isSrceenPORTRAIT);
+                }else {
+                    //切换竖屏
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                    isSrceenPORTRAIT = true;
+                   // Log.e("sout","切换竖屏--"+isSrceenPORTRAIT);
+                }
+               // Log.e("sout","setRequestedOrientation--"+isSrceenPORTRAIT);
+                closeSettingView();
+            }
+        });
+
+        fresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (webView != null) {
+                    closeSettingView();
+                    webView.reload();
+                }
+            }
+        });
+        fabShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (webView != null) {
+                    fab.close(true);
+                    webView.reload();
+                }
+            }
+        });
+        isHaveImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                closeLoadImage = !closeLoadImage;
+                if (closeLoadImage) {
+                    Drawable top = getResources().getDrawable(R.drawable.ic_menu_gallery, null);
+                    isHaveImageButton.setCompoundDrawablesWithIntrinsicBounds(null, top, null, null);
+                } else {
+                    Drawable top = getResources().getDrawable(R.drawable.ic_menu_camera, null);
+                    isHaveImageButton.setCompoundDrawablesWithIntrinsicBounds(null, top, null, null);
+                }
+            }
+        });
+
         light_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser){
+                if (fromUser) {
                     lightDefault.setChecked(false);
                     float progress1 = progress;
                     float i = progress1 / 100;
@@ -117,7 +183,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         lightDefault.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
                     light_seekBar.setProgress(50);
                     activityBrightnessManager.setActivityBrightness(-1.0f, WebActivity.this);
                 }
@@ -300,7 +366,6 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
 
     }
 
-
     /**
      * 打开底部设置栏的动画
      */
@@ -338,6 +403,14 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
             supportActionBar.setDisplayShowTitleEnabled(false);
         }
         FontDefault.setChecked(true);
+        if (isSrceenPORTRAIT){
+            Drawable top = getResources().getDrawable(R.drawable.ic_menu_send, null);
+            rotate.setCompoundDrawablesWithIntrinsicBounds(null, top, null, null);
+        }else {
+            Drawable top = getResources().getDrawable(R.drawable.ic_menu_manage, null);
+            rotate.setCompoundDrawablesWithIntrinsicBounds(null, top, null, null);
+        }
+
     }
 
     /**
@@ -470,8 +543,6 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
             }
         }
         webView.setWebChromeClient(new WebChromeClient() {
-
-
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
@@ -507,7 +578,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
                 super.onPageFinished(view, url);
                 //加载完成
                 progress.setVisibility(View.GONE);
-                webSettings.setBlockNetworkImage(false);
+                webSettings.setBlockNetworkImage(closeLoadImage);
                 //  Log.e("sout", "GONE了");
                 Toast.makeText(WebActivity.this, "加载完成", Toast.LENGTH_SHORT).show();
             }
