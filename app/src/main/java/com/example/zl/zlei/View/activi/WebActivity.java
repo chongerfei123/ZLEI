@@ -1,36 +1,32 @@
 package com.example.zl.zlei.View.activi;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorCompat;
-import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +60,14 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     ImageButton sharesButton;
     @BindView(R.id.settingView)
     RelativeLayout settingView;
+    @BindView(R.id.Font_minus)
+    TextView FontMinus;
+    @BindView(R.id.Font_add)
+    TextView FontAdd;
+    @BindView(R.id.Font_seekBar)
+    SeekBar FontSeekBar;
+    @BindView(R.id.Font_default)
+    CheckBox FontDefault;
     private WebView webView;
     private String src = null;
     private String url = null;
@@ -78,14 +82,82 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         setContentView(R.layout.activity_web);
         ButterKnife.bind(this);
         init();
+
+        //字体的CheckBox的逻辑
+        FontDefault.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    webSettings.setTextZoom(100);
+                    FontSeekBar.setProgress(50);
+                   // Log.e("sout", webSettings.getTextZoom() + "onCheckedChanged" +FontSeekBar.getProgress());
+                }
+            }
+        });
+        //字体的seekBar的逻辑
+        FontSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    FontDefault.setChecked(false);
+                    webSettings.setTextZoom(progress + 50);
+                   // Log.e("sout", progress + "fromUser");
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        //字体的A-的逻辑
+        FontMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FontDefault.setChecked(false);
+                int textZoom = webSettings.getTextZoom();
+                if (textZoom > 50) {
+                    textZoom = textZoom - 10;
+                } else {
+                    textZoom = 50;
+                }
+                FontSeekBar.setProgress(textZoom - 50);
+                webSettings.setTextZoom(textZoom);
+                //Log.e("sout", textZoom - 50 + "FontSeekBar");
+            }
+        });
+        //字体的A+的逻辑
+        FontAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FontDefault.setChecked(false);
+                int textZoom = webSettings.getTextZoom();
+                if (textZoom < 150) {
+                    textZoom = textZoom + 10;
+                } else {
+                    textZoom = 150;
+                }
+                FontSeekBar.setProgress(textZoom - 50);
+                webSettings.setTextZoom(textZoom);
+               // Log.e("sout", textZoom - 50 + "FontSeekBar");
+            }
+        });
+
+
+        //底部设置栏出现的逻辑
         settingView.setVisibility(View.INVISIBLE);
         settingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (settingViewopenFirst){
+                if (settingViewopenFirst) {
                     settingView.setVisibility(View.VISIBLE);
                     settingViewopenFirst = false;
-                }else {
+                } else {
                     if (settingViewState) {
                         closeSettingView();
                         settingViewState = false;
@@ -124,6 +196,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
 //            }
 //        });
 
+        //左上角返回键
         toolbarInweb.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -146,19 +219,25 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     }
 
 
+    /**
+     * 打开底部设置栏的动画
+     */
     private void openSettingView() {
 //        settingView
-        Log.e("sout","openSettingView");
+        Log.e("sout", "openSettingView");
         ViewPropertyAnimatorCompat animate = ViewCompat.animate(settingView);
         animate.translationY(0);
         animate.setDuration(300);
-        AccelerateInterpolator interpolator = new AccelerateInterpolator(2f);
+        AccelerateInterpolator interpolator = new AccelerateInterpolator(1.0f);
         animate.setInterpolator(interpolator);
         animate.start();
     }
 
+    /**
+     * 关闭底部设置栏的动画
+     */
     private void closeSettingView() {
-        Log.e("sout","closeSettingView");
+        Log.e("sout", "closeSettingView");
         ViewPropertyAnimatorCompat animate = ViewCompat.animate(settingView);
         animate.translationY(settingView.getHeight());
         animate.setDuration(300);
@@ -167,6 +246,9 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         animate.start();
     }
 
+    /**
+     * 初始化一些东西
+     */
     private void init() {
         setSupportActionBar(toolbarInweb);
         ActionBar supportActionBar = getSupportActionBar();
@@ -175,6 +257,9 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         }
     }
 
+    /**
+     * 判断左下角按钮按下以后应该出现蒙版的逻辑
+     */
     private void decideMengBanShouldComing() {
         fab.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
             @Override
@@ -189,6 +274,9 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         });
     }
 
+    /**
+     * 关闭蒙版的动画
+     */
     private void closeMengBan() {
         AlphaAnimation alphaAnimation = new AlphaAnimation(0.7f, 0);
         alphaAnimation.setDuration(500);
@@ -196,6 +284,9 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         fabMengban.setVisibility(View.INVISIBLE);
     }
 
+    /**
+     * 打开蒙版的动画
+     */
     private void openMengBan() {
         fabMengban.setVisibility(View.VISIBLE);
         AlphaAnimation alphaAnimation = new AlphaAnimation(0, 0.7f);
@@ -209,14 +300,19 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         return new WebActivityPresent(this);
     }
 
+    /**
+     * 每次进入这个activity调用这个（除了第一次，第一次是oncreate）
+     * @param intent
+     */
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         //
-        Log.e("sout", "onNewIntent");
+        //Log.e("sout", "onNewIntent");
+        //接收传进来的src和url
         src = intent.getStringExtra("src");
         url = intent.getStringExtra("url");
-        Log.e("sout", src + "--" + url);
+        //Log.e("sout", src + "--" + url);
     }
 
     @Override
@@ -283,7 +379,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
             @Override
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
-               // Log.e("sout", "" + newProgress);
+                // Log.e("sout", "" + newProgress);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     progress.setProgress(newProgress, true);
                 } else {
@@ -292,7 +388,6 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
             }
         });
         webView.setWebViewClient(new WebViewClient() {
-
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
@@ -317,7 +412,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
                 //加载完成
                 progress.setVisibility(View.GONE);
                 webSettings.setBlockNetworkImage(false);
-              //  Log.e("sout", "GONE了");
+                //  Log.e("sout", "GONE了");
                 Toast.makeText(WebActivity.this, "加载完成", Toast.LENGTH_SHORT).show();
             }
         });
@@ -330,7 +425,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
                     if (fabToggleState) {
                         fab.toggle(false);
                     }
-                    if (settingViewState){
+                    if (settingViewState) {
                         closeSettingView();
                         settingViewState = false;
                     }
