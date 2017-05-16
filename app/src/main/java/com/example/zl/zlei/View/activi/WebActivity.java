@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.example.zl.zlei.Present.WebActivityPresent;
 import com.example.zl.zlei.R;
 import com.example.zl.zlei.View.MainActivity;
+import com.example.zl.zlei.others.activityBrightnessManager;
 import com.github.clans.fab.FloatingActionMenu;
 
 import butterknife.BindView;
@@ -68,6 +69,14 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     SeekBar FontSeekBar;
     @BindView(R.id.Font_default)
     CheckBox FontDefault;
+    @BindView(R.id.light_minus)
+    ImageButton lightMinus;
+    @BindView(R.id.light_add)
+    ImageButton lightAdd;
+    @BindView(R.id.light_seekBar)
+    SeekBar light_seekBar;
+    @BindView(R.id.light_default)
+    CheckBox lightDefault;
     private WebView webView;
     private String src = null;
     private String url = null;
@@ -83,14 +92,87 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         ButterKnife.bind(this);
         init();
 
+        light_seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser){
+                    lightDefault.setChecked(false);
+                    float progress1 = progress;
+                    float i = progress1 / 100;
+                    activityBrightnessManager.setActivityBrightness(i, WebActivity.this);
+                    Log.e("sout", "brightness" + i);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        lightDefault.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    light_seekBar.setProgress(50);
+                    activityBrightnessManager.setActivityBrightness(-1.0f, WebActivity.this);
+                }
+            }
+        });
+
+        lightAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lightDefault.setChecked(false);
+                float brightness = activityBrightnessManager.getActivityBrightness(WebActivity.this);
+                if (brightness == -1.0) {
+                    //这是跟随系统亮度
+                    activityBrightnessManager.setActivityBrightness(0.5f, WebActivity.this);
+                    light_seekBar.setProgress((int) (0.5 * 100));
+                } else {
+                    brightness = brightness + 0.1f;
+                    if (brightness >= 1.0f) {
+                        brightness = 0.9999f;
+                    }
+                    activityBrightnessManager.setActivityBrightness(brightness, WebActivity.this);
+                    light_seekBar.setProgress((int) (brightness * 100));
+                }
+                Log.e("sout", "brightness" + brightness);
+            }
+        });
+        lightMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                lightDefault.setChecked(false);
+                float brightness = activityBrightnessManager.getActivityBrightness(WebActivity.this);
+                if (brightness == -1.0) {
+                    //这是跟随系统亮度
+                    activityBrightnessManager.setActivityBrightness(0.5f, WebActivity.this);
+                    light_seekBar.setProgress((int) (0.5 * 100));
+                } else {
+                    brightness = brightness - 0.1f;
+                    if (brightness <= 0f) {
+                        brightness = 0.0001f;
+                    }
+                    activityBrightnessManager.setActivityBrightness(brightness, WebActivity.this);
+                    light_seekBar.setProgress((int) (brightness * 100));
+                }
+                Log.e("sout", "brightness" + brightness);
+            }
+        });
+
         //字体的CheckBox的逻辑
         FontDefault.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
+                if (isChecked) {
                     webSettings.setTextZoom(100);
                     FontSeekBar.setProgress(50);
-                   // Log.e("sout", webSettings.getTextZoom() + "onCheckedChanged" +FontSeekBar.getProgress());
+                    // Log.e("sout", webSettings.getTextZoom() + "onCheckedChanged" +FontSeekBar.getProgress());
                 }
             }
         });
@@ -101,7 +183,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
                 if (fromUser) {
                     FontDefault.setChecked(false);
                     webSettings.setTextZoom(progress + 50);
-                   // Log.e("sout", progress + "fromUser");
+                    // Log.e("sout", progress + "fromUser");
                 }
             }
 
@@ -144,7 +226,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
                 }
                 FontSeekBar.setProgress(textZoom - 50);
                 webSettings.setTextZoom(textZoom);
-               // Log.e("sout", textZoom - 50 + "FontSeekBar");
+                // Log.e("sout", textZoom - 50 + "FontSeekBar");
             }
         });
 
@@ -255,6 +337,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         if (supportActionBar != null) {
             supportActionBar.setDisplayShowTitleEnabled(false);
         }
+        FontDefault.setChecked(true);
     }
 
     /**
@@ -302,6 +385,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
 
     /**
      * 每次进入这个activity调用这个（除了第一次，第一次是oncreate）
+     *
      * @param intent
      */
     @Override
@@ -316,15 +400,27 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
+    protected void onStop() {
+        super.onStop();
+        //退出的时候关闭底部设置栏
+        ViewPropertyAnimatorCompat animate = ViewCompat.animate(settingView);
+        animate.translationY(settingView.getHeight());
+        animate.setDuration(10);
+        animate.start();
+
+        FontDefault.setChecked(true);
+        FontSeekBar.setProgress(50);
+        lightDefault.setChecked(true);
+        light_seekBar.setProgress(50);
+        activityBrightnessManager.setActivityBrightness(-1.0f, WebActivity.this);
+
         if (webView != null) {
             webView.onPause();
         }
-        src = null;
-        url = null;
+//        src = null;
+//        url = null;
         toolSrctext.setText("");
-        Log.e("sout", src + "-onPause-" + url);
+        Log.e("sout", src + "-onStop-" + url);
         webView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
         webView.clearHistory();
         if (webView != null) {
@@ -346,8 +442,8 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
         progress.setProgress(0);
         progress.setVisibility(View.VISIBLE);
         webView = new WebView(this);
