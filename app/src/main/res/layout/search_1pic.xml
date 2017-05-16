@@ -3,13 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="170dp"
-    android:layout_marginLeft="3dp"
-    android:layout_marginRight="3dp"
+    android:layout_height="120dp"
+    android:layout_marginStart="3dp"
+    android:layout_marginEnd="3dp"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="@color/cardview_light_background"
     app:cardCornerRadius="12dp"
+    android:padding="5dp"
     app:cardElevation="10dp">
 
 
@@ -28,7 +29,7 @@
                 android:layout_width="190dp"
                 android:layout_height="match_parent"
                 android:paddingLeft="10dp"
-                android:paddingTop="10dp"
+                android:paddingTop="5dp"
                 android:text="平壤札记｜超近距离看金正恩剪彩，现场掌声雷动！"
                 android:textSize="20sp" />
 
@@ -42,6 +43,7 @@
         </LinearLayout>
 
         <RelativeLayout
+            android:layout_marginBottom="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

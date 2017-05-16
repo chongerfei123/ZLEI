@@ -10,16 +10,22 @@
     android:foreground="?android:attr/selectableItemBackground"
     app:cardBackgroundColor="@color/cardview_light_background"
     app:cardCornerRadius="12dp"
-    app:cardElevation="10dp">
+    app:cardElevation="10dp"
+    >
 
 
     <LinearLayout
+        android:paddingTop="5dp"
+        android:paddingBottom="10dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
         <TextView
+            android:layout_marginBottom="5dp"
             android:id="@+id/title"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:text="《怪物猎人XX》免费DLC任务岩石铠甲开始配信"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
@@ -30,12 +36,14 @@
             android:layout_width="match_parent"
             android:layout_height="0dp">
             <ImageView
+                android:layout_marginEnd="10dp"
                 android:id="@+id/search_image1"
                 android:src="@mipmap/ic_launcher_round"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="match_parent" />
             <ImageView
+                android:layout_marginEnd="10dp"
                 android:id="@+id/search_image2"
                 android:src="@mipmap/ic_launcher_round"
                 android:layout_width="0dp"
@@ -50,6 +58,7 @@
         </LinearLayout>
 
         <RelativeLayout
+            android:layout_marginTop="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 

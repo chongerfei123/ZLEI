@@ -188,7 +188,7 @@ public class SearchActivity extends BaseAppCompatActivity<SearchActivityInterfac
         searchRecyclerView.setVisibility(View.INVISIBLE);
         historyRecyclerView.setVisibility(View.VISIBLE);
         llHistory.setVisibility(View.VISIBLE);
-        historyRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+        historyRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
         //historyRecyclerView.addItemDecoration(new SpaceItemDecoration(15));
         SharedPreferences preferences = this.getSharedPreferences("search_history", MODE_PRIVATE);
         Set<String> history = preferences.getStringSet("history", null);

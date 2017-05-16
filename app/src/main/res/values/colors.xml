@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorPrimary">#1E8AE8</color>
+    <color name="colorPrimaryDark">#176EB9</color>
+
     <color name="colorAccent">#FF4081</color>
     <color name="colorAccentDark">#5b0421</color>
     <color name="main_tool_text">#f7f8f9</color>
-    <color name="search_edit">#ccd3da</color>
-    <color name="main_bottomtab">#ccd3da</color>
-    <color name="history_border">#505050</color>
+    <color name="search_edit">#4A9DE5</color>
+    <color name="main_bottomtab">#176EB9</color>
+    <color name="history_border">#a49b9b</color>
+    <color name="line">#a4a3a3</color>
+    <color name="history_textColor">#939393</color>
+    <color name="tabTextColor">#ede9e9</color>
+    <color name="tabSelectedTextColor">#121a30</color>
 </resources>

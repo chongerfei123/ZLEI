@@ -113,9 +113,9 @@ public class ChannalFragment extends BaseFragment<ChannalFragmentInterface, Chan
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 MainActivity activity = (MainActivity) getActivity();
-                if (dy > 50){
+                if (dy > 35){
                     activity.tabDismiss();
-                }else if (dy < -50){
+                }else if (dy < -35){
                     activity.tabComing();
                 }
 
