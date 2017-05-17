@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v7.app.ActionBar;
@@ -37,9 +38,12 @@ import android.widget.Toast;
 import com.example.zl.zlei.Present.WebActivityPresent;
 import com.example.zl.zlei.R;
 import com.example.zl.zlei.View.MainActivity;
+import com.example.zl.zlei.bean.DataBean;
 import com.example.zl.zlei.others.activityBrightnessManager;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
+
+import java.io.Serializable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -93,9 +97,10 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     private WebView webView;
     private String src = null;
     private String url = null;
+    private DataBean.ResultBean.ListBean bean = null;
     private WebSettings webSettings;
     private boolean fabToggleState;
-    private boolean settingViewState = true;
+    private boolean settingViewState = false;
     private boolean settingViewopenFirst = true;
     private boolean closeLoadImage = false;
     private static boolean isSrceenPORTRAIT = true;
@@ -149,11 +154,17 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
             public void onClick(View v) {
                 closeLoadImage = !closeLoadImage;
                 if (closeLoadImage) {
-                    Drawable top = getResources().getDrawable(R.drawable.ic_menu_gallery, null);
+                    Drawable top = getResources().getDrawable(R.drawable.web_broken_image, null);
                     isHaveImageButton.setCompoundDrawablesWithIntrinsicBounds(null, top, null, null);
+                    isHaveImageButton.setText("无图模式");
+                    closeSettingView();
+                    settingViewState = false;
+                    Toast.makeText(WebActivity.this, "以后将不会加载图片", Toast.LENGTH_SHORT).show();
                 } else {
-                    Drawable top = getResources().getDrawable(R.drawable.ic_menu_camera, null);
+                    Drawable top = getResources().getDrawable(R.drawable.web_have_image, null);
                     isHaveImageButton.setCompoundDrawablesWithIntrinsicBounds(null, top, null, null);
+                    isHaveImageButton.setText("有图模式");
+                    webView.reload();
                 }
             }
         });
@@ -362,6 +373,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         Intent intent = getIntent();
         src = intent.getStringExtra("src");
         url = intent.getStringExtra("url");
+        bean = (DataBean.ResultBean.ListBean) intent.getSerializableExtra("bean");
         Log.e("sout", src + "--" + url);
 
     }
@@ -404,10 +416,10 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         }
         FontDefault.setChecked(true);
         if (isSrceenPORTRAIT){
-            Drawable top = getResources().getDrawable(R.drawable.ic_menu_send, null);
+            Drawable top = getResources().getDrawable(R.drawable.web_current_portrait, null);
             rotate.setCompoundDrawablesWithIntrinsicBounds(null, top, null, null);
         }else {
-            Drawable top = getResources().getDrawable(R.drawable.ic_menu_manage, null);
+            Drawable top = getResources().getDrawable(R.drawable.web_primary_landscape, null);
             rotate.setCompoundDrawablesWithIntrinsicBounds(null, top, null, null);
         }
 
@@ -435,7 +447,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
      */
     private void closeMengBan() {
         AlphaAnimation alphaAnimation = new AlphaAnimation(0.7f, 0);
-        alphaAnimation.setDuration(500);
+        alphaAnimation.setDuration(300);
         fabMengban.startAnimation(alphaAnimation);
         fabMengban.setVisibility(View.INVISIBLE);
     }
@@ -446,7 +458,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     private void openMengBan() {
         fabMengban.setVisibility(View.VISIBLE);
         AlphaAnimation alphaAnimation = new AlphaAnimation(0, 0.7f);
-        alphaAnimation.setDuration(500);
+        alphaAnimation.setDuration(300);
         alphaAnimation.setFillAfter(true);
         fabMengban.startAnimation(alphaAnimation);
     }
@@ -469,6 +481,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         //接收传进来的src和url
         src = intent.getStringExtra("src");
         url = intent.getStringExtra("url");
+        bean = (DataBean.ResultBean.ListBean) intent.getSerializableExtra("bean");
         //Log.e("sout", src + "--" + url);
     }
 
@@ -538,7 +551,12 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         if (webView != null) {
             webView.onResume();
             if (url != null) {
-                webView.loadUrl(url);//WebView加载的网页使用loadUrl
+                try {
+                    webView.loadUrl(url);//WebView加载的网页使用loadUrl
+                }catch (Exception e){
+                    e.printStackTrace();
+                    webView.loadDataWithBaseURL(bean.getUrl(),bean.getContent(),null,"utf-8",null);
+                }
                 toolSrctext.setText(src);
             }
         }

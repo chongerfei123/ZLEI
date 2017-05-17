@@ -18,7 +18,7 @@
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
             android:isScrollContainer="true"
-            app:navigationIcon="@drawable/fab_add"
+            app:navigationIcon="@drawable/searchactivity_back_white_36dp"
             app:popupTheme="@style/AppTheme.PopupOverlay">
 
             <RelativeLayout
@@ -34,23 +34,24 @@
                     android:text="xxxx" />
 
                 <ImageButton
-
                     android:id="@+id/setting_button"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="10dp"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="12dp"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:src="@drawable/xx" />
+                    android:src="@drawable/web_menu" />
 
                 <ImageButton
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:id="@+id/shares_button"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="20dp"
+                    android:paddingEnd="15dp"
+                    android:paddingStart="10dp"
                     android:layout_toStartOf="@+id/setting_button"
-                    android:src="@drawable/xx" />
+                    android:src="@drawable/web_share" />
             </RelativeLayout>
 
 
@@ -64,7 +65,7 @@
         android:id="@+id/fab_mengban"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorAccent"
+        android:background="@color/web_mengban_bg"
         android:visibility="invisible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
@@ -77,7 +78,8 @@
             android:id="@+id/floatingParent"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            >
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">
             <com.github.clans.fab.FloatingActionMenu
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
@@ -88,17 +90,21 @@
                 android:layout_marginStart="15dp"
                 app:menu_colorNormal="@color/colorAccent"
                 app:menu_colorPressed="@color/colorAccentDark"
-                app:menu_icon="@android:drawable/ic_input_add"
+                app:menu_icon="@drawable/web_float_add"
                 app:menu_labels_ellipsize="end"
                 app:menu_labels_singleLine="true"
                 fab:menu_labels_position="right"
+                app:menu_labels_colorNormal="#00ffffff"
+                app:menu_labels_showShadow="false"
+                app:menu_labels_colorPressed="#00ffffff"
+                app:menu_labels_colorRipple="#00ffffff"
                 fab:menu_openDirection="up">
 
                 <com.github.clans.fab.FloatingActionButton
                     android:id="@+id/fab_share"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/xx"
+                    android:src="@drawable/web_white_refresh"
                     app:fab_colorNormal="@color/colorAccent"
                     app:fab_colorPressed="@color/colorAccentDark"
                     app:fab_label="刷新"
@@ -130,8 +136,8 @@
            android:layout_alignParentBottom="true"
             android:id="@+id/settingView"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
-            android:background="@color/history_border"
+            android:layout_height="220dp"
+            android:background="@color/settingView_bg"
             >
 
             <LinearLayout
@@ -142,6 +148,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:textColor="@color/web_text_bg"
                     android:id="@+id/Font_minus"
                     android:clickable="true"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
@@ -163,6 +170,7 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:textColor="@color/web_text_bg"
                     android:id="@+id/Font_add"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:clickable="true"
@@ -174,12 +182,13 @@
                     android:textSize="20sp" />
 
                 <CheckBox
+                    android:checked="true"
                     android:id="@+id/Font_default"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:paddingEnd="10dp"
                     android:text="默认"
-                    android:textColor="@color/main_tool_text" />
+                    android:textColor="@color/web_text_bg" />
             </LinearLayout>
 
             <LinearLayout
@@ -187,7 +196,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/ziti"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="15dp"
                 android:orientation="horizontal">
 
                 <ImageButton
@@ -197,7 +206,7 @@
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
                     android:paddingStart="10dp"
-                    android:src="@mipmap/ic_launcher_round"
+                    android:src="@drawable/ic_wb_sunny_black_18dp"
                     android:textSize="20sp" />
 
                 <SeekBar
@@ -217,7 +226,7 @@
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:gravity="center"
                     android:paddingEnd="5dp"
-                    android:src="@mipmap/ic_launcher_round"
+                    android:src="@drawable/ic_wb_sunny_black_24dp"
                     android:textSize="20sp" />
 
 
@@ -228,7 +237,7 @@
                     android:layout_height="match_parent"
                     android:paddingEnd="10dp"
                     android:text="系统"
-                    android:textColor="@color/main_tool_text" />
+                    android:textColor="@color/web_text_bg" />
             </LinearLayout>
 
             <View
@@ -256,11 +265,12 @@
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:button="@null"
-                    android:drawableTop="@mipmap/ic_launcher_round"
+                    android:drawableTop="@drawable/web_have_image"
                     android:gravity="center"
-                    android:text="无图模式" />
+                    android:text="有图模式" />
 
                 <RadioButton
+                    android:textColor="@color/web_text_bg"
                     android:id="@+id/fresh"
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:layout_width="0dp"
@@ -268,7 +278,7 @@
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:button="@null"
-                    android:drawableTop="@mipmap/ic_launcher_round"
+                    android:drawableTop="@drawable/web_refresh"
                     android:gravity="center"
                     android:text="刷新" />
 
@@ -280,7 +290,7 @@
                     android:layout_margin="10dp"
                     android:layout_weight="1"
                     android:button="@null"
-                    android:drawableTop="@mipmap/ic_launcher_round"
+                    android:drawableTop="@drawable/web_current_portrait"
                     android:gravity="center"
                     android:text="转屏" />
             </RadioGroup>

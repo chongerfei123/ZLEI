@@ -22,6 +22,7 @@ import com.example.zl.zlei.View.activi.WebActivity;
 import com.example.zl.zlei.View.frg.BaseFragment;
 import com.example.zl.zlei.adapter.MultyItemBean;
 import com.example.zl.zlei.adapter.MyRecyclerAdapter;
+import com.example.zl.zlei.bean.DataBean;
 import com.example.zl.zlei.global.Global;
 import com.example.zl.zlei.listener.OnDataListener;
 import com.example.zl.zlei.listener.OnScrollListener;
@@ -97,6 +98,8 @@ public class ChannalFragment extends BaseFragment<ChannalFragmentInterface, Chan
                 }else {
                     url = item.bean.getUrl();
                 }
+                DataBean.ResultBean.ListBean bean = item.bean;
+                intent.putExtra("bean", (Serializable) bean);
                 intent.putExtra("src",src);
                 intent.putExtra("url",url);
                 startActivity(intent);

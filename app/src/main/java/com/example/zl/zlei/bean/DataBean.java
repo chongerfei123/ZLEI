@@ -1,5 +1,6 @@
 package com.example.zl.zlei.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -77,7 +78,7 @@ public class DataBean {
             this.list = list;
         }
 
-        public static class ListBean {
+        public static class ListBean implements Serializable {
             /**
              * title : 中国大亨进军华尔街资管行业
              * time : 2017-05-08 20:12
