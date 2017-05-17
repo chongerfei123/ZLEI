@@ -102,6 +102,7 @@ public class ChannalFragment extends BaseFragment<ChannalFragmentInterface, Chan
                 intent.putExtra("bean", (Serializable) bean);
                 intent.putExtra("src",src);
                 intent.putExtra("url",url);
+                intent.putExtra("requestCode",Global.ChannalFragmentIntent);
                 startActivity(intent);
             }
         });

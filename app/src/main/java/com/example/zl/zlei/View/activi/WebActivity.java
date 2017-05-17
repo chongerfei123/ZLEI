@@ -39,6 +39,8 @@ import com.example.zl.zlei.Present.WebActivityPresent;
 import com.example.zl.zlei.R;
 import com.example.zl.zlei.View.MainActivity;
 import com.example.zl.zlei.bean.DataBean;
+import com.example.zl.zlei.bean.SearchDataBean;
+import com.example.zl.zlei.global.Global;
 import com.example.zl.zlei.others.activityBrightnessManager;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
@@ -95,8 +97,8 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     @BindView(R.id.rotate)
     RadioButton rotate;
     private WebView webView;
-    private String src = null;
-    private String url = null;
+    private static String src = null;
+    private static String url = null;
     private DataBean.ResultBean.ListBean bean = null;
     private WebSettings webSettings;
     private boolean fabToggleState;
@@ -104,6 +106,9 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     private boolean settingViewopenFirst = true;
     private boolean closeLoadImage = false;
     private static boolean isSrceenPORTRAIT = true;
+    private static int requestCode = 0;
+    private static boolean isFalst = true;
+    private SearchDataBean.ResultBean.ListBean searchBean = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -363,19 +368,31 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
                     webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
                     webView.goBack();
                 } else {
-                    Intent intent = new Intent(WebActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    Intent mainIntent = new Intent(WebActivity.this, MainActivity.class);
+                    Intent searchIntent = new Intent(WebActivity.this, SearchActivity.class);
+                    if (requestCode == Global.ChannalFragmentIntent){
+                        startActivity(mainIntent);
+                    }else if (requestCode == Global.SearchActivityIntent){
+                        startActivity(searchIntent);
+                    }
                 }
             }
         });
         decideMengBanShouldComing();
         Log.e("sout", "onCreate");
-        Intent intent = getIntent();
-        src = intent.getStringExtra("src");
-        url = intent.getStringExtra("url");
-        bean = (DataBean.ResultBean.ListBean) intent.getSerializableExtra("bean");
+        if (isFalst){
+            isFalst = false;
+            Intent intent = getIntent();
+            requestCode = intent.getIntExtra("requestCode", 0);
+            src = intent.getStringExtra("src");
+            url = intent.getStringExtra("url");
+            if (requestCode == 1){
+                bean = (DataBean.ResultBean.ListBean) intent.getSerializableExtra("bean");
+            }else if (requestCode == 2){
+                searchBean = (SearchDataBean.ResultBean.ListBean) intent.getSerializableExtra("bean");
+            }
+        }
         Log.e("sout", src + "--" + url);
-
     }
 
     /**
@@ -477,11 +494,16 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         //
-        //Log.e("sout", "onNewIntent");
+        Log.e("sout", "onNewIntent");
         //接收传进来的src和url
+        requestCode = intent.getIntExtra("requestCode",0);
         src = intent.getStringExtra("src");
         url = intent.getStringExtra("url");
-        bean = (DataBean.ResultBean.ListBean) intent.getSerializableExtra("bean");
+        if (requestCode == 1){
+            bean = (DataBean.ResultBean.ListBean) intent.getSerializableExtra("bean");
+        }else if (requestCode == 2){
+            searchBean = (SearchDataBean.ResultBean.ListBean) intent.getSerializableExtra("bean");
+        }
         //Log.e("sout", src + "--" + url);
     }
 
@@ -552,7 +574,12 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
             webView.onResume();
             if (url != null) {
                 try {
-                    webView.loadUrl(url);//WebView加载的网页使用loadUrl
+                    if (requestCode == 1){
+                        webView.loadUrl(url);//WebView加载的网页使用loadUrl
+                    }else if (requestCode == 2){
+                        webView.loadUrl(url);//WebView加载的网页使用loadUrl
+                     //   webView.loadDataWithBaseURL(searchBean.getUrl(),searchBean.getContent(),null,"utf-8",null);
+                    }
                 }catch (Exception e){
                     e.printStackTrace();
                     webView.loadDataWithBaseURL(bean.getUrl(),bean.getContent(),null,"utf-8",null);
@@ -652,8 +679,13 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
                     webView.goBack();
                     return false;
                 } else {
-                    Intent intent = new Intent(this, MainActivity.class);
-                    startActivity(intent);
+                    Intent mainIntent = new Intent(this, MainActivity.class);
+                    Intent searchIntent = new Intent(this, SearchActivity.class);
+                    if (requestCode == Global.ChannalFragmentIntent){
+                        startActivity(mainIntent);
+                    }else if (requestCode == Global.SearchActivityIntent){
+                        startActivity(searchIntent);
+                    }
                     return true;
                 }
             } else {

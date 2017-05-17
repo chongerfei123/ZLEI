@@ -1,6 +1,7 @@
 package com.example.zl.zlei.View.activi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -29,10 +30,12 @@ import com.example.zl.zlei.R;
 import com.example.zl.zlei.adapter.HomeAdapter;
 import com.example.zl.zlei.adapter.SearchMultyItemBean;
 import com.example.zl.zlei.adapter.SearchRecyclerAdapter;
+import com.example.zl.zlei.bean.SearchDataBean;
 import com.example.zl.zlei.global.Global;
 import com.example.zl.zlei.listener.OnSearchDataListener;
 import com.example.zl.zlei.others.SpaceItemDecoration;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -64,6 +67,7 @@ public class SearchActivity extends BaseAppCompatActivity<SearchActivityInterfac
     private SearchRecyclerAdapter searchRecyclerAdapter;
     private ArrayList<String> historyData;
     private HomeAdapter homeAdapter;
+    private ArrayList<SearchMultyItemBean> currentData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +76,26 @@ public class SearchActivity extends BaseAppCompatActivity<SearchActivityInterfac
         ButterKnife.bind(this);
 
         init();
+        searchRecyclerAdapter.setOnRecyclerViewItemClickListener(new BaseQuickAdapter.OnRecyclerViewItemClickListener() {
+            @Override
+            public void onItemClick(View view, int i) {
+                Intent intent = new Intent(SearchActivity.this,WebActivity.class);
+                SearchMultyItemBean multyItemBean = currentData.get(i);
+                SearchDataBean.ResultBean.ListBean bean = multyItemBean.bean;
+                String src = bean.getSrc();
+                String url = null;
+                if (bean.getUrl().equals("") || bean.getUrl().contains("jpg?siz")) {
+                    url = bean.getWeburl();
+                }else {
+                    url = bean.getUrl();
+                }
+                intent.putExtra("bean", (Serializable) bean);
+                intent.putExtra("src",src);
+                intent.putExtra("url",url);
+                intent.putExtra("requestCode",Global.SearchActivityIntent);
+                startActivity(intent);
+            }
+        });
         homeAdapter.setOnItemClickListener(new HomeAdapter.OnItemClickListener() {
             @Override
             public void onItenClick(View view, int position) {
@@ -161,7 +185,8 @@ public class SearchActivity extends BaseAppCompatActivity<SearchActivityInterfac
             @Override
             public void OnSucceed(ArrayList<SearchMultyItemBean> data) {
                 // Log.e("sout", "加载成功--SearchActivity");
-                searchRecyclerAdapter.setNewData(data);
+                currentData = data;
+                searchRecyclerAdapter.setNewData(currentData);
                 //Log.e("sout", "setData成功--SearchActivity");
                 Toast.makeText(SearchActivity.this, "加载成功", Toast.LENGTH_SHORT).show();
             }

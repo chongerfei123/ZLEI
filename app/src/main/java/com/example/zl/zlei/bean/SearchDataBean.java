@@ -1,5 +1,6 @@
 package com.example.zl.zlei.bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -77,7 +78,7 @@ public class SearchDataBean {
             this.list = list;
         }
 
-        public static class ListBean {
+        public static class ListBean implements Serializable {
             /**
              * title : 宋茜每次机场街拍都能上热搜，这次吸睛的不只是衣服，还有她的腰
              * time : 2017-05-12 10:00:00

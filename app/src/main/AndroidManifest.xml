@@ -25,6 +25,7 @@
         </activity>
         <activity
             android:name=".View.activi.SearchActivity"
+            android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="adjustPan">
 

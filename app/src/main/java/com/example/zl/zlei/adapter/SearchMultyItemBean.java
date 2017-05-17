@@ -13,7 +13,7 @@ public class SearchMultyItemBean extends MultiItemEntity{
     public static int TYPE_1pic = 1;
     public static int TYPE_2pic = 2;
     public static int TYPE_3pic = 3;
-    SearchDataBean.ResultBean.ListBean bean;
+    public SearchDataBean.ResultBean.ListBean bean;
     private int type;
     public SearchMultyItemBean(SearchDataBean.ResultBean.ListBean bean) {
         super();
