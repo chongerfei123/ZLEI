@@ -2,12 +2,10 @@ package com.example.zl.zlei.View.activi;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorCompat;
 import android.support.v7.app.ActionBar;
@@ -41,11 +39,13 @@ import com.example.zl.zlei.View.MainActivity;
 import com.example.zl.zlei.bean.DataBean;
 import com.example.zl.zlei.bean.SearchDataBean;
 import com.example.zl.zlei.global.Global;
+import com.example.zl.zlei.others.CacheBeanToSD;
 import com.example.zl.zlei.others.activityBrightnessManager;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -96,6 +96,8 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     FloatingActionButton fabShare;
     @BindView(R.id.rotate)
     RadioButton rotate;
+    @BindView(R.id.fab_star)
+    FloatingActionButton fabStar;
     private WebView webView;
     private static String src = null;
     private static String url = null;
@@ -109,6 +111,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     private static int requestCode = 0;
     private static boolean isFalst = true;
     private SearchDataBean.ResultBean.ListBean searchBean = null;
+    private CacheBeanToSD cacheBeanToSD = new CacheBeanToSD(WebActivity.this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,21 +120,50 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         ButterKnife.bind(this);
         init();
 
+        fabStar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (requestCode == 1){
+                    if (bean.isStar()) {
+                        //被star
+                        fabStar.setImageResource(R.drawable.web_star_border_white_24dp);
+                        bean.setStar(false);
+                    }else {
+                        //没有被star
+                        fabStar.setImageResource(R.drawable.web_star_red_800_24dp);
+                        bean.setStar(true);
+                    }
+                }
+                if (requestCode == 2){
+                    if (searchBean.isStar()) {
+                        //被star
+                        fabStar.setImageResource(R.drawable.web_star_border_white_24dp);
+                        searchBean.setStar(false);
+                    }else {
+                        //没有被star
+                        fabStar.setImageResource(R.drawable.web_star_red_800_24dp);
+                        searchBean.setStar(true);
+                    }
+                }
+
+            }
+        });
+
         rotate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isSrceenPORTRAIT){
+                if (isSrceenPORTRAIT) {
                     //切换横屏
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                     isSrceenPORTRAIT = false;
                     //Log.e("sout","切换横屏--"+isSrceenPORTRAIT);
-                }else {
+                } else {
                     //切换竖屏
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                     isSrceenPORTRAIT = true;
-                   // Log.e("sout","切换竖屏--"+isSrceenPORTRAIT);
+                    // Log.e("sout","切换竖屏--"+isSrceenPORTRAIT);
                 }
-               // Log.e("sout","setRequestedOrientation--"+isSrceenPORTRAIT);
+                // Log.e("sout","setRequestedOrientation--"+isSrceenPORTRAIT);
                 closeSettingView();
             }
         });
@@ -321,6 +353,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
                 if (settingViewopenFirst) {
                     settingView.setVisibility(View.VISIBLE);
                     settingViewopenFirst = false;
+                    settingViewState = true;
                 } else {
                     if (settingViewState) {
                         closeSettingView();
@@ -370,9 +403,9 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
                 } else {
                     Intent mainIntent = new Intent(WebActivity.this, MainActivity.class);
                     Intent searchIntent = new Intent(WebActivity.this, SearchActivity.class);
-                    if (requestCode == Global.ChannalFragmentIntent){
+                    if (requestCode == Global.ChannalFragmentIntent) {
                         startActivity(mainIntent);
-                    }else if (requestCode == Global.SearchActivityIntent){
+                    } else if (requestCode == Global.SearchActivityIntent) {
                         startActivity(searchIntent);
                     }
                 }
@@ -380,19 +413,45 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         });
         decideMengBanShouldComing();
         Log.e("sout", "onCreate");
-        if (isFalst){
+        if (isFalst) {
             isFalst = false;
             Intent intent = getIntent();
             requestCode = intent.getIntExtra("requestCode", 0);
             src = intent.getStringExtra("src");
             url = intent.getStringExtra("url");
-            if (requestCode == 1){
-                bean = (DataBean.ResultBean.ListBean) intent.getSerializableExtra("bean");
-            }else if (requestCode == 2){
-                searchBean = (SearchDataBean.ResultBean.ListBean) intent.getSerializableExtra("bean");
+            if (requestCode == 1) {
+                ArrayList<DataBean.ResultBean.ListBean> list = cacheBeanToSD.getStorageData("dataBean");
+                DataBean.ResultBean.ListBean bean = (DataBean.ResultBean.ListBean) intent.getSerializableExtra("bean");
+                boolean ishave = false;
+                for (DataBean.ResultBean.ListBean listBean : list) {
+                    if (listBean.getTitle().equals(bean.getTitle())) {
+                        fabStar.setImageResource(R.drawable.web_star_red_800_24dp);
+                        ishave = true;
+                    }
+                }
+                if (!ishave){
+                    fabStar.setImageResource(R.drawable.web_star_border_white_24dp);
+                }
+                bean.setStar(ishave);
+                this.bean = bean;
+            } else if (requestCode == 2) {
+                ArrayList<SearchDataBean.ResultBean.ListBean> list = cacheBeanToSD.getStorageSearchData("searchDataBean");
+                SearchDataBean.ResultBean.ListBean bean = (SearchDataBean.ResultBean.ListBean) intent.getSerializableExtra("bean");
+                boolean ishave = false;
+                for (SearchDataBean.ResultBean.ListBean listBean : list) {
+                    if (listBean.getTitle().equals(bean.getTitle())) {
+                        fabStar.setImageResource(R.drawable.web_star_red_800_24dp);
+                        ishave = true;
+                    }
+                }
+                if (!ishave){
+                    fabStar.setImageResource(R.drawable.web_star_border_white_24dp);
+                }
+                bean.setStar(ishave);
+                this.searchBean = bean;
             }
         }
-        Log.e("sout", src + "--" + url);
+      //  Log.e("sout", src + "--" + url);
     }
 
     /**
@@ -432,10 +491,10 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
             supportActionBar.setDisplayShowTitleEnabled(false);
         }
         FontDefault.setChecked(true);
-        if (isSrceenPORTRAIT){
+        if (isSrceenPORTRAIT) {
             Drawable top = getResources().getDrawable(R.drawable.web_current_portrait, null);
             rotate.setCompoundDrawablesWithIntrinsicBounds(null, top, null, null);
-        }else {
+        } else {
             Drawable top = getResources().getDrawable(R.drawable.web_primary_landscape, null);
             rotate.setCompoundDrawablesWithIntrinsicBounds(null, top, null, null);
         }
@@ -496,20 +555,112 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         //
         Log.e("sout", "onNewIntent");
         //接收传进来的src和url
-        requestCode = intent.getIntExtra("requestCode",0);
+        requestCode = intent.getIntExtra("requestCode", 0);
         src = intent.getStringExtra("src");
         url = intent.getStringExtra("url");
-        if (requestCode == 1){
-            bean = (DataBean.ResultBean.ListBean) intent.getSerializableExtra("bean");
-        }else if (requestCode == 2){
-            searchBean = (SearchDataBean.ResultBean.ListBean) intent.getSerializableExtra("bean");
+        if (requestCode == 1) {
+            ArrayList<DataBean.ResultBean.ListBean> list = cacheBeanToSD.getStorageData("dataBean");
+            DataBean.ResultBean.ListBean bean = (DataBean.ResultBean.ListBean) intent.getSerializableExtra("bean");
+            boolean ishave = false;
+           // Log.e("sout",list.size()+"");
+            for (DataBean.ResultBean.ListBean listBean : list) {
+               // Log.e("sout",bean.getTitle()+"you....."+listBean.getTitle());
+                if (listBean.getTitle().equals(bean.getTitle())) {
+                    fabStar.setImageResource(R.drawable.web_star_red_800_24dp);
+                    ishave = true;
+                }
+            }
+            if (!ishave){
+                fabStar.setImageResource(R.drawable.web_star_border_white_24dp);
+            }
+            bean.setStar(ishave);
+            this.bean = bean;
+
+        } else if (requestCode == 2) {
+            ArrayList<SearchDataBean.ResultBean.ListBean> list = cacheBeanToSD.getStorageSearchData("searchDataBean");
+            SearchDataBean.ResultBean.ListBean bean = (SearchDataBean.ResultBean.ListBean) intent.getSerializableExtra("bean");
+            boolean ishave = false;
+            for (SearchDataBean.ResultBean.ListBean listBean : list) {
+                if (listBean.getTitle().equals(bean.getTitle())) {
+                    fabStar.setImageResource(R.drawable.web_star_red_800_24dp);
+                    ishave = true;
+                }
+            }
+            if (!ishave){
+                fabStar.setImageResource(R.drawable.web_star_border_white_24dp);
+            }
+            bean.setStar(ishave);
+            this.searchBean = bean;
         }
         //Log.e("sout", src + "--" + url);
+
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+
+        // TODO: 2017/5/19
+        CacheBeanToSD cacheBeanToSD = new CacheBeanToSD(WebActivity.this);
+        if (requestCode == 1){
+            ArrayList<DataBean.ResultBean.ListBean> dataBean = cacheBeanToSD.getStorageData("dataBean");
+            if (bean.isStar()){
+                boolean ishave = false;
+                for (DataBean.ResultBean.ListBean listBean : dataBean) {
+                    if (listBean.getTitle().equals(bean.getTitle())) {
+                        ishave = true;
+                    }
+                }
+                if (!ishave){
+                    dataBean.add(bean);
+                    cacheBeanToSD.saveStorage2SDCard(dataBean,"dataBean");
+                }
+            }else {
+                ArrayList<DataBean.ResultBean.ListBean> deleteBean = new ArrayList<>();
+                for (DataBean.ResultBean.ListBean listBean : dataBean) {
+                    if (listBean.getTitle().equals(bean.getTitle())) {
+                        Log.e("sout",bean.getTitle()+"you.....要删除"+listBean.getTitle());
+                        deleteBean.add(listBean);
+                    }
+                }
+                dataBean.removeAll(deleteBean);
+                cacheBeanToSD.saveStorage2SDCard(dataBean,"dataBean");
+            }
+            for (DataBean.ResultBean.ListBean x : dataBean) {
+                x.getTitle();
+                Log.e("sout",""+x.getTitle());
+            }
+        }else if (requestCode == 2){
+            ArrayList<SearchDataBean.ResultBean.ListBean> searchDataBean = cacheBeanToSD.getStorageSearchData("searchDataBean");
+            if (searchBean.isStar()){
+                boolean ishave = false;
+                for (SearchDataBean.ResultBean.ListBean listBean : searchDataBean) {
+                    if (listBean.getTitle().equals(searchBean.getTitle())) {
+                        ishave = true;
+                    }
+                }
+                if (!ishave){
+                    searchDataBean.add(searchBean);
+                    cacheBeanToSD.saveStorage2SDCard(searchDataBean,"searchDataBean");
+                }
+            }else {
+                ArrayList<SearchDataBean.ResultBean.ListBean> deleteBean = new ArrayList<>();
+                for (SearchDataBean.ResultBean.ListBean listBean : searchDataBean) {
+                    if (listBean.getTitle().equals(searchBean.getTitle())) {
+                        Log.e("sout",searchBean.getTitle()+"you.....要删除"+listBean.getTitle());
+                        deleteBean.add(listBean);
+                    }
+                }
+                searchDataBean.removeAll(deleteBean);
+                cacheBeanToSD.saveStorage2SDCard(searchDataBean,"searchDataBean");
+            }
+            for (SearchDataBean.ResultBean.ListBean x : searchDataBean) {
+                x.getTitle();
+                Log.e("sout",""+x.getTitle());
+            }
+        }
+
         //退出的时候关闭底部设置栏
         ViewPropertyAnimatorCompat animate = ViewCompat.animate(settingView);
         animate.translationY(settingView.getHeight());
@@ -528,7 +679,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
 //        src = null;
 //        url = null;
         toolSrctext.setText("");
-        Log.e("sout", src + "-onStop-" + url);
+    //    Log.e("sout", src + "-onStop-" + url);
         webView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
         webView.clearHistory();
         if (webView != null) {
@@ -574,15 +725,15 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
             webView.onResume();
             if (url != null) {
                 try {
-                    if (requestCode == 1){
+                    if (requestCode == 1) {
                         webView.loadUrl(url);//WebView加载的网页使用loadUrl
-                    }else if (requestCode == 2){
+                    } else if (requestCode == 2) {
                         webView.loadUrl(url);//WebView加载的网页使用loadUrl
-                     //   webView.loadDataWithBaseURL(searchBean.getUrl(),searchBean.getContent(),null,"utf-8",null);
+                        //   webView.loadDataWithBaseURL(searchBean.getUrl(),searchBean.getContent(),null,"utf-8",null);
                     }
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
-                    webView.loadDataWithBaseURL(bean.getUrl(),bean.getContent(),null,"utf-8",null);
+                    webView.loadDataWithBaseURL(bean.getUrl(), bean.getContent(), null, "utf-8", null);
                 }
                 toolSrctext.setText(src);
             }
@@ -681,9 +832,9 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
                 } else {
                     Intent mainIntent = new Intent(this, MainActivity.class);
                     Intent searchIntent = new Intent(this, SearchActivity.class);
-                    if (requestCode == Global.ChannalFragmentIntent){
+                    if (requestCode == Global.ChannalFragmentIntent) {
                         startActivity(mainIntent);
-                    }else if (requestCode == Global.SearchActivityIntent){
+                    } else if (requestCode == Global.SearchActivityIntent) {
                         startActivity(searchIntent);
                     }
                     return true;

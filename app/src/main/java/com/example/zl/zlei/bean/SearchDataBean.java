@@ -98,7 +98,15 @@ public class SearchDataBean {
             private String weburl;
             private String content;
             private List<String> pic;
+            private boolean isStar = false;
 
+            public boolean isStar() {
+                return isStar;
+            }
+
+            public void setStar(boolean star) {
+                isStar = star;
+            }
 
             public String getTitle() {
                 return title;

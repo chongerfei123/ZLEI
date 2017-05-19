@@ -71,6 +71,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content">
                             <ProgressBar
+                                android:indeterminateDrawable="@drawable/progressbar"
                                 android:paddingTop="15dp"
                                 android:paddingBottom="15dp"
                                 android:layout_marginEnd="5dp"

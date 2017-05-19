@@ -98,7 +98,15 @@ public class DataBean {
             private String content;
             private String url;
             private String weburl;
+            private boolean isStar = false;
 
+            public boolean isStar() {
+                return isStar;
+            }
+
+            public void setStar(boolean star) {
+                isStar = star;
+            }
             public String getTitle() {
                 return title;
             }

@@ -111,10 +111,10 @@
                     app:fab_size="mini" />
 
                 <com.github.clans.fab.FloatingActionButton
-                    android:id="@+id/fab_upload"
+                    android:id="@+id/fab_star"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/xx"
+                    android:src="@drawable/web_star_border_white_24dp"
                     app:fab_colorNormal="@color/colorAccent"
                     app:fab_colorPressed="@color/colorAccentDark"
                     app:fab_label="收藏"

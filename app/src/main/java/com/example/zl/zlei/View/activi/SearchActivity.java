@@ -118,7 +118,7 @@ public class SearchActivity extends BaseAppCompatActivity<SearchActivityInterfac
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s)) {
-                    searchText.setTextColor(Color.GRAY);
+                    searchText.setTextColor(Color.LTGRAY);
                     searchText.setEnabled(false);
                 } else {
                     searchText.setTextColor(Color.WHITE);
