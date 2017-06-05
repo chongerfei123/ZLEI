@@ -41,6 +41,7 @@ import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.sharesdk.framework.ShareSDK;
 
 public class SearchActivity extends BaseAppCompatActivity<SearchActivityInterface, SearchActivityPresent> implements SearchActivityInterface {
 

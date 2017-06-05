@@ -44,11 +44,12 @@ import com.example.zl.zlei.others.activityBrightnessManager;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.onekeyshare.OnekeyShare;
 
 public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, WebActivityPresent> implements WebActivityInterface {
 
@@ -92,12 +93,14 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     RadioButton isHaveImageButton;
     @BindView(R.id.fresh)
     RadioButton fresh;
-    @BindView(R.id.fab_share)
-    FloatingActionButton fabShare;
+    @BindView(R.id.fab_flush)
+    FloatingActionButton fab_flush;
     @BindView(R.id.rotate)
     RadioButton rotate;
     @BindView(R.id.fab_star)
     FloatingActionButton fabStar;
+    @BindView(R.id.fab_share)
+    FloatingActionButton fabShare;
     private WebView webView;
     private static String src = null;
     private static String url = null;
@@ -120,26 +123,42 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         ButterKnife.bind(this);
         init();
 
+        //分享
+        sharesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showShare();
+            }
+        });
+        //分享
+        fabShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showShare();
+                fab.close(true);
+            }
+        });
+
         fabStar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (requestCode == 1){
+                if (requestCode == 1) {
                     if (bean.isStar()) {
                         //被star
                         fabStar.setImageResource(R.drawable.web_star_border_white_24dp);
                         bean.setStar(false);
-                    }else {
+                    } else {
                         //没有被star
                         fabStar.setImageResource(R.drawable.web_star_red_800_24dp);
                         bean.setStar(true);
                     }
                 }
-                if (requestCode == 2){
+                if (requestCode == 2) {
                     if (searchBean.isStar()) {
                         //被star
                         fabStar.setImageResource(R.drawable.web_star_border_white_24dp);
                         searchBean.setStar(false);
-                    }else {
+                    } else {
                         //没有被star
                         fabStar.setImageResource(R.drawable.web_star_red_800_24dp);
                         searchBean.setStar(true);
@@ -177,7 +196,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
                 }
             }
         });
-        fabShare.setOnClickListener(new View.OnClickListener() {
+        fab_flush.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (webView != null) {
@@ -429,7 +448,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
                         ishave = true;
                     }
                 }
-                if (!ishave){
+                if (!ishave) {
                     fabStar.setImageResource(R.drawable.web_star_border_white_24dp);
                 }
                 bean.setStar(ishave);
@@ -444,14 +463,14 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
                         ishave = true;
                     }
                 }
-                if (!ishave){
+                if (!ishave) {
                     fabStar.setImageResource(R.drawable.web_star_border_white_24dp);
                 }
                 bean.setStar(ishave);
                 this.searchBean = bean;
             }
         }
-      //  Log.e("sout", src + "--" + url);
+        //  Log.e("sout", src + "--" + url);
     }
 
     /**
@@ -498,7 +517,38 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
             Drawable top = getResources().getDrawable(R.drawable.web_primary_landscape, null);
             rotate.setCompoundDrawablesWithIntrinsicBounds(null, top, null, null);
         }
+        //初始化ShareSDK
+        ShareSDK.initSDK(getApplicationContext(), "1e019774b0fb0");
+    }
 
+    /**
+     * ShareSDK
+     */
+    private void showShare() {
+        ShareSDK.initSDK(WebActivity.this);
+        OnekeyShare oks = new OnekeyShare();
+        //关闭sso授权
+        oks.disableSSOWhenAuthorize();
+
+        // title标题，印象笔记、邮箱、信息、微信、人人网和QQ空间等使用
+        oks.setTitle("标题");
+        // titleUrl是标题的网络链接，QQ和QQ空间等使用
+        oks.setTitleUrl("http://sharesdk.cn");
+        // text是分享文本，所有平台都需要这个字段
+        oks.setText("我是分享文本");
+        // imagePath是图片的本地路径，Linked-In以外的平台都支持此参数
+        //oks.setImagePath("/sdcard/test.jpg");//确保SDcard下面存在此张图片
+        // url仅在微信（包括好友和朋友圈）中使用
+        oks.setUrl("http://sharesdk.cn");
+        // comment是我对这条分享的评论，仅在人人网和QQ空间使用
+        oks.setComment("我是测试评论文本");
+        // site是分享此内容的网站名称，仅在QQ空间使用
+        oks.setSite(getString(R.string.app_name));
+        // siteUrl是分享此内容的网站地址，仅在QQ空间使用
+        oks.setSiteUrl("http://sharesdk.cn");
+
+        // 启动分享GUI
+        oks.show(WebActivity.this);
     }
 
     /**
@@ -562,15 +612,15 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
             ArrayList<DataBean.ResultBean.ListBean> list = cacheBeanToSD.getStorageData("dataBean");
             DataBean.ResultBean.ListBean bean = (DataBean.ResultBean.ListBean) intent.getSerializableExtra("bean");
             boolean ishave = false;
-           // Log.e("sout",list.size()+"");
+            // Log.e("sout",list.size()+"");
             for (DataBean.ResultBean.ListBean listBean : list) {
-               // Log.e("sout",bean.getTitle()+"you....."+listBean.getTitle());
+                // Log.e("sout",bean.getTitle()+"you....."+listBean.getTitle());
                 if (listBean.getTitle().equals(bean.getTitle())) {
                     fabStar.setImageResource(R.drawable.web_star_red_800_24dp);
                     ishave = true;
                 }
             }
-            if (!ishave){
+            if (!ishave) {
                 fabStar.setImageResource(R.drawable.web_star_border_white_24dp);
             }
             bean.setStar(ishave);
@@ -586,7 +636,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
                     ishave = true;
                 }
             }
-            if (!ishave){
+            if (!ishave) {
                 fabStar.setImageResource(R.drawable.web_star_border_white_24dp);
             }
             bean.setStar(ishave);
@@ -603,61 +653,61 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
 
         // TODO: 2017/5/19
         CacheBeanToSD cacheBeanToSD = new CacheBeanToSD(WebActivity.this);
-        if (requestCode == 1){
+        if (requestCode == 1) {
             ArrayList<DataBean.ResultBean.ListBean> dataBean = cacheBeanToSD.getStorageData("dataBean");
-            if (bean.isStar()){
+            if (bean.isStar()) {
                 boolean ishave = false;
                 for (DataBean.ResultBean.ListBean listBean : dataBean) {
                     if (listBean.getTitle().equals(bean.getTitle())) {
                         ishave = true;
                     }
                 }
-                if (!ishave){
+                if (!ishave) {
                     dataBean.add(bean);
-                    cacheBeanToSD.saveStorage2SDCard(dataBean,"dataBean");
+                    cacheBeanToSD.saveStorage2SDCard(dataBean, "dataBean");
                 }
-            }else {
+            } else {
                 ArrayList<DataBean.ResultBean.ListBean> deleteBean = new ArrayList<>();
                 for (DataBean.ResultBean.ListBean listBean : dataBean) {
                     if (listBean.getTitle().equals(bean.getTitle())) {
-                        Log.e("sout",bean.getTitle()+"you.....要删除"+listBean.getTitle());
+                        Log.e("sout", bean.getTitle() + "you.....要删除" + listBean.getTitle());
                         deleteBean.add(listBean);
                     }
                 }
                 dataBean.removeAll(deleteBean);
-                cacheBeanToSD.saveStorage2SDCard(dataBean,"dataBean");
+                cacheBeanToSD.saveStorage2SDCard(dataBean, "dataBean");
             }
             for (DataBean.ResultBean.ListBean x : dataBean) {
                 x.getTitle();
-                Log.e("sout",""+x.getTitle());
+                Log.e("sout", "" + x.getTitle());
             }
-        }else if (requestCode == 2){
+        } else if (requestCode == 2) {
             ArrayList<SearchDataBean.ResultBean.ListBean> searchDataBean = cacheBeanToSD.getStorageSearchData("searchDataBean");
-            if (searchBean.isStar()){
+            if (searchBean.isStar()) {
                 boolean ishave = false;
                 for (SearchDataBean.ResultBean.ListBean listBean : searchDataBean) {
                     if (listBean.getTitle().equals(searchBean.getTitle())) {
                         ishave = true;
                     }
                 }
-                if (!ishave){
+                if (!ishave) {
                     searchDataBean.add(searchBean);
-                    cacheBeanToSD.saveStorage2SDCard(searchDataBean,"searchDataBean");
+                    cacheBeanToSD.saveStorage2SDCard(searchDataBean, "searchDataBean");
                 }
-            }else {
+            } else {
                 ArrayList<SearchDataBean.ResultBean.ListBean> deleteBean = new ArrayList<>();
                 for (SearchDataBean.ResultBean.ListBean listBean : searchDataBean) {
                     if (listBean.getTitle().equals(searchBean.getTitle())) {
-                        Log.e("sout",searchBean.getTitle()+"you.....要删除"+listBean.getTitle());
+                        Log.e("sout", searchBean.getTitle() + "you.....要删除" + listBean.getTitle());
                         deleteBean.add(listBean);
                     }
                 }
                 searchDataBean.removeAll(deleteBean);
-                cacheBeanToSD.saveStorage2SDCard(searchDataBean,"searchDataBean");
+                cacheBeanToSD.saveStorage2SDCard(searchDataBean, "searchDataBean");
             }
             for (SearchDataBean.ResultBean.ListBean x : searchDataBean) {
                 x.getTitle();
-                Log.e("sout",""+x.getTitle());
+                Log.e("sout", "" + x.getTitle());
             }
         }
 
@@ -679,7 +729,7 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
 //        src = null;
 //        url = null;
         toolSrctext.setText("");
-    //    Log.e("sout", src + "-onStop-" + url);
+        //    Log.e("sout", src + "-onStop-" + url);
         webView.loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
         webView.clearHistory();
         if (webView != null) {
@@ -825,10 +875,13 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             if (!fabToggleState) {
-                if (webView.canGoBack()) {
+                String webViewUrl = webView.getUrl();
+                String replace = webViewUrl.replace("https", "http");
+                if (webView.canGoBack() && !replace.equals(WebActivity.url)) {
+                   // Log.e("sout", "onKeyDown: "+webView.getUrl()+"原："+ WebActivity.url);
                     webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
                     webView.goBack();
-                    return false;
+                    return true;
                 } else {
                     Intent mainIntent = new Intent(this, MainActivity.class);
                     Intent searchIntent = new Intent(this, SearchActivity.class);
@@ -841,9 +894,10 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
                 }
             } else {
                 fab.toggle(false);
-                return false;
+                return true;
             }
+        }else {
+            return super.onKeyDown(keyCode, event);
         }
-        return super.onKeyDown(keyCode, event);
     }
 }

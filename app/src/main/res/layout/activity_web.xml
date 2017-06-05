@@ -101,7 +101,7 @@
                 fab:menu_openDirection="up">
 
                 <com.github.clans.fab.FloatingActionButton
-                    android:id="@+id/fab_share"
+                    android:id="@+id/fab_flush"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@drawable/web_white_refresh"
@@ -121,10 +121,10 @@
                     app:fab_size="mini" />
 
                 <com.github.clans.fab.FloatingActionButton
-                    android:id="@+id/fab_preview"
+                    android:id="@+id/fab_share"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/xx"
+                    android:src="@drawable/web_fab_share"
                     app:fab_colorNormal="@color/colorAccent"
                     app:fab_colorPressed="@color/colorAccentDark"
                     app:fab_label="分享"

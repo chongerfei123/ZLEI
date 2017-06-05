@@ -39,4 +39,17 @@ dependencies {
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     compile 'com.github.clans:fab:1.6.4'
+    compile files('libs/MobCommons-2017.0412.1554.jar')
+    compile files('libs/MobTools-2017.0412.1554.jar')
+    compile files('libs/ShareSDK-Core-2.8.3.jar')
+    compile files('libs/ShareSDK-Email-2.8.3.jar')
+    compile files('libs/ShareSDK-QQ-2.8.3.jar')
+    compile files('libs/ShareSDK-QZone-2.8.3.jar')
+    compile files('libs/ShareSDK-ShortMessage-2.8.3.jar')
+    compile files('libs/ShareSDK-SinaWeibo-2.8.3.jar')
+    compile files('libs/ShareSDK-TencentWeibo-2.8.3.jar')
+    compile files('libs/ShareSDK-Wechat-2.8.3.jar')
+    compile files('libs/ShareSDK-Wechat-Core-2.8.3.jar')
+    compile files('libs/ShareSDK-Wechat-Favorite-2.8.3.jar')
+    compile files('libs/ShareSDK-Wechat-Moments-2.8.3.jar')
 }
