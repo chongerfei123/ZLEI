@@ -23,6 +23,9 @@ public class MainActivity extends BaseFragmentActivity<MainActivityInterface, Ma
     @BindView(R.id.main_viewPager)
     ViewPager mainViewPager;
     private boolean mainTabState = false;
+    private TabLayout.Tab tab_one;
+    private TabLayout.Tab tab_two;
+    private TabLayout.Tab tab_three;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +35,51 @@ public class MainActivity extends BaseFragmentActivity<MainActivityInterface, Ma
         FragmentManager fm = getSupportFragmentManager();
         MainPagerAdapter mainPagerAdapter = new MainPagerAdapter(fm);
         mainViewPager.setAdapter(mainPagerAdapter);
+        mainViewPager.setOffscreenPageLimit(3);
         mainTab.setupWithViewPager(mainViewPager);
+
+        tab_one = mainTab.getTabAt(0);
+        tab_two = mainTab.getTabAt(1);
+        tab_three = mainTab.getTabAt(2);
+        tab_one.setIcon(getResources().getDrawable(R.drawable.main_bottom_news_blue,null));
+        tab_two.setIcon(getResources().getDrawable(R.drawable.main_bottom_joke_gray,null));
+        tab_three.setIcon(getResources().getDrawable(R.drawable.main_bottom_set_gray,null));
+        tab_one.setTag("news");
+        tab_two.setTag("joke");
+        tab_three.setTag("set");
+
+        mainTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                String tag = (String) tab.getTag();
+                switch (tag) {
+                    case "news":tab.setIcon(getResources().getDrawable(R.drawable.main_bottom_news_blue,null));
+                        break;
+                    case "joke":tab.setIcon(getResources().getDrawable(R.drawable.main_bottom_joke_blue,null));
+                        break;
+                    case "set":tab.setIcon(getResources().getDrawable(R.drawable.main_bottom_set_blue,null));
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                String tag = (String) tab.getTag();
+                switch (tag) {
+                    case "news":tab.setIcon(getResources().getDrawable(R.drawable.main_bottom_news_gray,null));
+                        break;
+                    case "joke":tab.setIcon(getResources().getDrawable(R.drawable.main_bottom_joke_gray,null));
+                        break;
+                    case "set":tab.setIcon(getResources().getDrawable(R.drawable.main_bottom_set_gray,null));
+                        break;
+                }
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
     @Override

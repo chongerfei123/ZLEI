@@ -1,5 +1,6 @@
 package com.example.zl.zlei.View.frg.channalfrg;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -50,6 +51,7 @@ public class ChannalFragment extends BaseFragment<ChannalFragmentInterface, Chan
     public RelativeLayout errorView;
     public ProgressBar channalProgress;
     public TextView noNetView;
+    private String TAG = "sout";
 
     @Nullable
     @Override
@@ -64,10 +66,12 @@ public class ChannalFragment extends BaseFragment<ChannalFragmentInterface, Chan
         noNetView = null;
         return view;
     }
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        Data();
+    }
 
+    private void Data() {
         //对adapter、swipeRefreshLayout、recyclerView的初始化
         initRecAndAda();
 
@@ -102,7 +106,7 @@ public class ChannalFragment extends BaseFragment<ChannalFragmentInterface, Chan
                 intent.putExtra("bean", (Serializable) bean);
                 intent.putExtra("src",src);
                 intent.putExtra("url",url);
-                intent.putExtra("requestCode",Global.ChannalFragmentIntent);
+                intent.putExtra("requestCode", Global.ChannalFragmentIntent);
                 startActivity(intent);
 
             }
@@ -123,7 +127,6 @@ public class ChannalFragment extends BaseFragment<ChannalFragmentInterface, Chan
                 }else if (dy < -35){
                     activity.tabComing();
                 }
-
             }
         });
     }
@@ -206,10 +209,6 @@ public class ChannalFragment extends BaseFragment<ChannalFragmentInterface, Chan
         });
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-    }
 
     private void initRecAndAda() {
         recyclerView.addItemDecoration(new SpaceItemDecoration(30));

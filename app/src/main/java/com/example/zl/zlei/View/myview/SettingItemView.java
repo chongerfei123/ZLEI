@@ -36,6 +36,7 @@ public class SettingItemView extends View {
     private Paint drawablePaint;
     private Bitmap bitmap;
     private boolean isShowIcon;
+    private boolean isShowLine;
 
 
     public SettingItemView(Context context) {
@@ -56,6 +57,7 @@ public class SettingItemView extends View {
         bg_color = typedArray.getColor(R.styleable.SettingItemView_bg_color, defColor);
         mainTextSize = typedArray.getInt(R.styleable.SettingItemView_mainTextSize, defMainTextSize);
         isShowIcon = typedArray.getBoolean(R.styleable.SettingItemView_showIcon, true);
+        isShowLine = typedArray.getBoolean(R.styleable.SettingItemView_showLine, true);
         textPaint = new Paint();
         textPaint.setTextSize(mainTextSize);
         textPaint.setColor(Color.BLACK);
@@ -105,7 +107,6 @@ public class SettingItemView extends View {
         matrix.postScale(scaleHeight, scaleHeight);
         try {
             turnImage = Bitmap.createBitmap(bitmap, 0, 0, turnImageWidth, turnImageHeight, matrix,true);
-            Log.e("sout",scaleHeight+ "onMeasure: " );
         }catch (Exception e){
             Log.e("sout",scaleHeight+ "onMeasure: "+e.getMessage() );
         }
@@ -119,9 +120,11 @@ public class SettingItemView extends View {
         if (otherText == null){
             otherText = "test";
         }
-        canvas.drawColor(bg_color);
+        //canvas.drawColor(bg_color);
         canvas.drawText(mainText,10,height/3*2,textPaint);
-        canvas.drawLine(0,height+1,width,height+1,linePaint);
+        if (isShowLine){
+            canvas.drawLine(0,height+1,width,height+1,linePaint);
+        }
         canvas.drawText(otherText,width/2-otherTextPaint.measureText(otherText)/2,height/3*2,otherTextPaint);
         if (isShowIcon){
             canvas.drawBitmap(turnImage,width-turnImage.getWidth()-10,height/3,drawablePaint);

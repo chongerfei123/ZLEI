@@ -1,13 +1,26 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.zl.zlei.View.frg.JokesFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.example.zl.zlei.View.frg.JokesFragment"
+    android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <android.support.design.widget.TabLayout
+        app:tabGravity="fill"
+        android:outlineProvider="bounds"
+        android:translationZ="10dp"
+        android:id="@+id/tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="hello_jokes_fragment" />
+        android:layout_height="wrap_content"
+        app:tabBackground="@color/colorPrimaryDark"
+        app:tabIndicatorColor="@android:color/holo_blue_dark"
+        app:tabSelectedTextColor="@color/tabSelectedTextColor"
+        app:tabTextColor="@color/tabTextColor" />
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-</FrameLayout>
+</LinearLayout>

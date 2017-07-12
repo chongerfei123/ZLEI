@@ -8,5 +8,6 @@
         <attr name="mainTextSize" format="integer"/>
         <attr name="otherTextSize" format="integer"/>
         <attr name="showIcon" format="boolean"/>
+        <attr name="showLine" format="boolean"/>
     </declare-styleable>
 </resources>
