@@ -21,4 +21,5 @@ public class MainPresent extends BasePresenter<MainActivityInterface> {
         this.newsViewActivity = newsViewActivity;
         modle = new MainModleImp();
     }
+
 }

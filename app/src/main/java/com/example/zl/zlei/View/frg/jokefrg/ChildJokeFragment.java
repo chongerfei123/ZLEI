@@ -1,6 +1,7 @@
 package com.example.zl.zlei.View.frg.jokefrg;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -11,10 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.zl.zlei.R;
+import com.example.zl.zlei.adapter.JokeRecyclerAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,7 +28,6 @@ public class ChildJokeFragment extends JokeChannalFragment {
     RecyclerView recyclerView;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout swipeRefreshLayout;
-    Unbinder unbinder;
 
     public ChildJokeFragment() {
         // Required empty public constructor
@@ -35,26 +35,27 @@ public class ChildJokeFragment extends JokeChannalFragment {
 
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        super.Channal = "笑话";
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        super.recyclerView = this.recyclerView;
-        super.swipeRefreshLayout = this.swipeRefreshLayout;
-        super.Channal = "笑话";
-        super.isFirstComing = this.isFirstComing;
         View view = inflater.inflate(R.layout.fragment_child_joke, container, false);
-        unbinder = ButterKnife.bind(this, view);
+        // Inflate the layout for this fragment
+        super.unbinder = ButterKnife.bind(this, view);
+        super.recyclerView = recyclerView;
+        super.swipeRefreshLayout = swipeRefreshLayout;
+        super.Channal = "笑话";
+        super.isFirstComing = isFirstComing;
+        super.adapter = new JokeRecyclerAdapter(null,getContext());
+        Log.e("sout", "onCreateView: ----------" );
+        if (recyclerView == null){
+            Log.e("sout", "onCreateView:this.recyclerView;空 ");
+        }
         return view;
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
 }
