@@ -27,13 +27,15 @@ import butterknife.Unbinder;
  * Created by zl on 2017/7/11.
  */
 
-public class JokeChannalFragment extends BaseFragment<JokeChannalFragmentInterface,JokeChannalFragmentPresent>implements JokeChannalFragmentInterface {
+public class JokeChannalFragment extends BaseFragment<JokeChannalFragmentInterface, JokeChannalFragmentPresent> implements JokeChannalFragmentInterface {
 
     public SwipeRefreshLayout swipeRefreshLayout;
     public RecyclerView recyclerView;
     public String Channal;
     public int isFirstComing = -1;
     public JokeRecyclerAdapter adapter;
+    private int currentPagenum = 0;
+    private int currentPageSize = 10;
     Unbinder unbinder;
 
     @Nullable
@@ -60,34 +62,29 @@ public class JokeChannalFragment extends BaseFragment<JokeChannalFragmentInterfa
         }
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-    }
 
     private void initRecAndAda() {
-//        recyclerView.addItemDecoration(new SpaceItemDecoration(30));
+        recyclerView.addItemDecoration(new SpaceItemDecoration(30));
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
-//        adapter.setContext(getContext());
-//        adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
-//        adapter.openLoadMore(10,true);
-//        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
-//                android.R.color.holo_green_light,
-//                android.R.color.holo_orange_light,
-//                android.R.color.holo_red_light);
+        // adapter.setContext(getContext());
+        adapter.openLoadAnimation(BaseQuickAdapter.SCALEIN);
+        adapter.openLoadMore(10, true);
+        swipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        Log.e("sout", Channal+"setUserVisibleHint: "+isVisibleToUser+","+isFirstComing );
-        if (isVisibleToUser && isFirstComing == -1 && Channal != null && !Channal.equals("笑话")){
+        Log.e("sout", Channal + "setUserVisibleHint: " + isVisibleToUser + "," + isFirstComing);
+        if (isVisibleToUser && isFirstComing == -1 && Channal != null && !Channal.equals("笑话")) {
             isFirstComing++;
             //第一次进入加载数据
-            Log.e("sout", Channal + "--setUserVisibleHint: 第一次进入" );
-            firstLoadData();
+            Log.e("sout", Channal + "--setUserVisibleHint: 第一次进入");
+            // firstLoadData();
         }
     }
 
@@ -96,21 +93,19 @@ public class JokeChannalFragment extends BaseFragment<JokeChannalFragmentInterfa
 //        if (mfragmentPresenter == null){
 //            Log.e("sout", "JokeChannalFragment--mfragmentPresenter==null");
 //        }
+        currentPagenum = 1;
+        mfragmentPresenter.loadData("笑话", currentPagenum, currentPageSize, "addtime", Global.APPKEY, new OnLoadTextJokeListener() {
+            @Override
+            public void OnSucceed(ArrayList<JokeMultyItemBean> data) {
+                Log.e("sout", "JokeChannalFragment__OnSucceed: " + data.size());
+                adapter.setNewData(data);
+            }
 
-            mfragmentPresenter.loadData("笑话",1,10,"addtime", Global.APPKEY, new OnLoadTextJokeListener() {
-                @Override
-                public void OnSucceed(ArrayList<JokeMultyItemBean> data) {
-                     Log.e("sout", "JokeChannalFragment__OnSucceed: "+data.size() );
-                     adapter.setNewData(data);
-                }
+            @Override
+            public void OnError(Exception e) {
 
-                @Override
-                public void OnError(Exception e) {
-
-                }
-            });
-
-
+            }
+        });
     }
 
     @Override

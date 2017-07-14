@@ -43,7 +43,7 @@ public class ChildAllFragment extends JokeChannalFragment {
         super.swipeRefreshLayout = swipeRefreshLayout;
         super.Channal = "精选";
         super.isFirstComing = isFirstComing;
-        super.adapter = new JokeRecyclerAdapter(null,getContext());
+        super.adapter = new JokeRecyclerAdapter(null);
         Log.e("sout", "onCreateView: ----------" );
         if (recyclerView == null){
             Log.e("sout", "onCreateView:this.recyclerView;空 ");

@@ -31,10 +31,9 @@
                 android:paddingTop="10dp"
                 android:text="平壤札记｜超近距离看ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc金正恩剪彩，现场掌声雷动！"
                 android:textSize="18sp" />
-
         </LinearLayout>
 
-        <view
+        <View
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_width="match_parent"

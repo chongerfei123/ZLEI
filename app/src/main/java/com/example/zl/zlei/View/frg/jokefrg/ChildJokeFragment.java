@@ -50,7 +50,7 @@ public class ChildJokeFragment extends JokeChannalFragment {
         super.swipeRefreshLayout = swipeRefreshLayout;
         super.Channal = "笑话";
         super.isFirstComing = isFirstComing;
-        super.adapter = new JokeRecyclerAdapter(null,getContext());
+        super.adapter = new JokeRecyclerAdapter(null);
         Log.e("sout", "onCreateView: ----------" );
         if (recyclerView == null){
             Log.e("sout", "onCreateView:this.recyclerView;空 ");
