@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.zl.zlei.R;
 import com.example.zl.zlei.adapter.JokeRecyclerAdapter;
@@ -21,6 +22,8 @@ import butterknife.ButterKnife;
  */
 public class ChildPhotoFragment extends JokeChannalFragment {
 
+    @BindView(R.id.noNetView)
+    TextView noNetView;
     private int isFirstComing = -1;
 
     @BindView(R.id.recyclerView)
@@ -44,12 +47,14 @@ public class ChildPhotoFragment extends JokeChannalFragment {
         super.Channal = "趣图";
         super.isFirstComing = isFirstComing;
         super.adapter = new JokeRecyclerAdapter(null);
-        Log.e("sout", "onCreateView: ----------" );
-        if (recyclerView == null){
+        super.noNetView = this.noNetView;
+        Log.e("sout", "onCreateView: ----------");
+        if (recyclerView == null) {
             Log.e("sout", "onCreateView:this.recyclerView;空 ");
         }
         return view;
     }
+
 
 }
 

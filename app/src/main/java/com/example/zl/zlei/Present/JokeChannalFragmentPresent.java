@@ -1,5 +1,6 @@
 package com.example.zl.zlei.Present;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.example.zl.zlei.Modle.frg.JokeChannalModle;
@@ -56,5 +57,10 @@ public class JokeChannalFragmentPresent extends BasePresenter<JokeChannalFragmen
                 }
             });
         }
+    }
+
+    public boolean checkNetIsOK(Context context) {
+        boolean isOK = modle.checkNetIsOK(context);
+        return isOK;
     }
 }

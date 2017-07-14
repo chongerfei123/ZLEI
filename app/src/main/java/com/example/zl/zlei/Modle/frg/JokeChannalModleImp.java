@@ -1,5 +1,8 @@
 package com.example.zl.zlei.Modle.frg;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.example.zl.zlei.adapter.JokeMultyItemBean;
@@ -69,6 +72,19 @@ public class JokeChannalModleImp implements JokeChannalModle {
             data.add(new JokeMultyItemBean(JokeMultyItemBean.TEXT,bean));
         }
         return data;
+    }
+
+    @Override
+    public boolean checkNetIsOK(Context context) {
+        if (context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mNetworkInfo != null) {
+                return mNetworkInfo.isAvailable();
+            }
+        }
+        return false;
     }
 
 }

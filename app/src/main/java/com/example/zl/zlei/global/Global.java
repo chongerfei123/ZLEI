@@ -15,4 +15,6 @@ public class Global {
     public static int ChannalFragmentIntent = 1;
     public static int SearchActivityIntent = 2;
     public static int NUM = 10;
+    public static int TABMISSING = 0;
+    public static int TABCOMING = 1;
 }

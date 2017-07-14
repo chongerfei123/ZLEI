@@ -3,6 +3,8 @@ package com.example.zl.zlei.View.frg.channalfrg;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -27,11 +29,16 @@ import com.example.zl.zlei.bean.DataBean;
 import com.example.zl.zlei.global.Global;
 import com.example.zl.zlei.listener.OnDataListener;
 import com.example.zl.zlei.listener.OnScrollListener;
+import com.example.zl.zlei.others.MessageEvent;
 import com.example.zl.zlei.others.SpaceItemDecoration;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.Unbinder;
 
@@ -52,6 +59,7 @@ public class ChannalFragment extends BaseFragment<ChannalFragmentInterface, Chan
     public ProgressBar channalProgress;
     public TextView noNetView;
     private String TAG = "sout";
+    private Handler handler;
 
     @Nullable
     @Override
@@ -69,12 +77,22 @@ public class ChannalFragment extends BaseFragment<ChannalFragmentInterface, Chan
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         Data();
+        handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                if (msg.what == 0){
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            }
+        };
     }
 
     private void Data() {
         //对adapter、swipeRefreshLayout、recyclerView的初始化
         initRecAndAda();
 
+        tabComingOrMiss();
         // 检查是否有网络连接
         if (mfragmentPresenter.checkNetIsOK(getContext())) {
             //初始第一次加载数据
@@ -111,23 +129,7 @@ public class ChannalFragment extends BaseFragment<ChannalFragmentInterface, Chan
             }
         });
 
-        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
 
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                MainActivity activity = (MainActivity) getActivity();
-                if (dy > 35){
-                    activity.tabDismiss();
-                }else if (dy < -35){
-                    activity.tabComing();
-                }
-            }
-        });
     }
 
     /**
@@ -151,11 +153,20 @@ public class ChannalFragment extends BaseFragment<ChannalFragmentInterface, Chan
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                new Timer().schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if (swipeRefreshLayout.isRefreshing()) {
+                            handler.sendEmptyMessage(0);
+                        }
+                    }
+                },5000);
                 mfragmentPresenter.loadData(false,channal,0, Global.NUM,Global.APPKEY,new OnDataListener(){
                     @Override
                     public void OnSucceed(ArrayList<MultyItemBean> data) {
                         adapter.setNewData(data);
                         currentNum = Global.NUM;
+                        noNetView.setVisibility(View.INVISIBLE);
                         swipeRefreshLayout.setRefreshing(false);
                     }
                     @Override
@@ -244,13 +255,33 @@ public class ChannalFragment extends BaseFragment<ChannalFragmentInterface, Chan
     public void showErrorView() {
         errorView.setVisibility(View.VISIBLE);
         channalProgress.setVisibility(View.INVISIBLE);
-        swipeRefreshLayout.setVisibility(View.INVISIBLE);
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void showProgress() {
         errorView.setVisibility(View.INVISIBLE);
         channalProgress.setVisibility(View.VISIBLE);
-        swipeRefreshLayout.setVisibility(View.INVISIBLE);
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
+    }
+
+    private void tabComingOrMiss() {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 35){
+                    EventBus.getDefault().post(new MessageEvent(Global.TABMISSING));
+                }else if (dy < -35){
+                    EventBus.getDefault().post(new MessageEvent(Global.TABCOMING));
+                }
+            }
+        });
+
     }
 }

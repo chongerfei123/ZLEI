@@ -4,6 +4,16 @@
     android:layout_height="match_parent"
     tools:context="com.example.zl.zlei.View.frg.jokefrg.ChildJokeFragment">
 
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/noNetView"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:text="真的没有网络。。。"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefreshLayout"
         android:layout_width="match_parent"

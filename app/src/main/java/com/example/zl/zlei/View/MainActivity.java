@@ -12,6 +12,12 @@ import com.example.zl.zlei.R;
 import com.example.zl.zlei.View.activi.BaseFragmentActivity;
 import com.example.zl.zlei.View.activi.MainActivityInterface;
 import com.example.zl.zlei.adapter.MainPagerAdapter;
+import com.example.zl.zlei.global.Global;
+import com.example.zl.zlei.others.MessageEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -32,6 +38,8 @@ public class MainActivity extends BaseFragmentActivity<MainActivityInterface, Ma
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);//
+        //注册EventBus
+        EventBus.getDefault().register(this);
         FragmentManager fm = getSupportFragmentManager();
         MainPagerAdapter mainPagerAdapter = new MainPagerAdapter(fm);
         mainViewPager.setAdapter(mainPagerAdapter);
@@ -106,5 +114,21 @@ public class MainActivity extends BaseFragmentActivity<MainActivityInterface, Ma
             mainTabState = false;
         }
 
+    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMoonEvent(MessageEvent messageEvent){
+        int message = messageEvent.getMessage();
+        if(message == Global.TABCOMING){
+            tabComing();
+        }else if (message == Global.TABMISSING){
+            tabDismiss();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //取消注册EventBus事件
+        EventBus.getDefault().unregister(this);
     }
 }
