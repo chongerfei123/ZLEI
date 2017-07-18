@@ -416,7 +416,9 @@ public class WebActivity extends BaseAppCompatActivity<WebActivityInterface, Web
         toolbarInweb.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (webView.canGoBack()) {
+                String webViewUrl = webView.getUrl();
+                String replace = webViewUrl.replace("https", "http");
+                if (webView.canGoBack() && !replace.equals(WebActivity.url)) {
                     webSettings.setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
                     webView.goBack();
                 } else {

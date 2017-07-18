@@ -131,4 +131,5 @@ public class MainActivity extends BaseFragmentActivity<MainActivityInterface, Ma
         //取消注册EventBus事件
         EventBus.getDefault().unregister(this);
     }
+
 }

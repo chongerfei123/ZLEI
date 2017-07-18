@@ -125,6 +125,7 @@ public class ChannalFragment extends BaseFragment<ChannalFragmentInterface, Chan
                 intent.putExtra("src",src);
                 intent.putExtra("url",url);
                 intent.putExtra("requestCode", Global.ChannalFragmentIntent);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
         });

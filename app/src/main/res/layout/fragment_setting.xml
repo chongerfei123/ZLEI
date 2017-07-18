@@ -92,6 +92,7 @@ ps：有了CollapsingToolbarLayout，上面的不需要了
                         app:turnImage="@drawable/ic_keyboard_arrow_right_grey_400_24dp" />
 
                     <com.example.zl.zlei.View.myview.SettingItemView
+                        android:id="@+id/setting_ClearCache"
                         android:background="?android:attr/selectableItemBackground"
                         android:clickable="true"
                         android:layout_width="match_parent"
@@ -100,7 +101,7 @@ ps：有了CollapsingToolbarLayout，上面的不需要了
                         android:layout_marginStart="10dp"
                         app:bg_color="#ffffff"
                         app:mainText="清除缓存"
-                        app:otherText="111.11kb"
+                        app:otherText="暂无"
                         app:showLine="false"
                         app:turnImage="@drawable/ic_keyboard_arrow_right_grey_400_24dp" />
                 </LinearLayout>
@@ -122,6 +123,7 @@ ps：有了CollapsingToolbarLayout，上面的不需要了
                     android:orientation="vertical">
 
                     <com.example.zl.zlei.View.myview.SettingItemView
+                        android:id="@+id/openSourceLicense"
                         android:background="?android:attr/selectableItemBackground"
                         android:clickable="true"
                         android:layout_width="match_parent"
@@ -146,6 +148,7 @@ ps：有了CollapsingToolbarLayout，上面的不需要了
                         app:turnImage="@drawable/ic_keyboard_arrow_right_grey_400_24dp" />
 
                     <com.example.zl.zlei.View.myview.SettingItemView
+                        android:id="@+id/contactMe"
                         android:background="?android:attr/selectableItemBackground"
                         android:clickable="true"
                         android:layout_width="match_parent"
@@ -158,6 +161,7 @@ ps：有了CollapsingToolbarLayout，上面的不需要了
                         app:turnImage="@drawable/ic_keyboard_arrow_right_grey_400_24dp" />
 
                     <com.example.zl.zlei.View.myview.SettingItemView
+                        android:id="@+id/shareAPP"
                         android:background="?android:attr/selectableItemBackground"
                         android:clickable="true"
                         android:layout_width="match_parent"
@@ -165,7 +169,7 @@ ps：有了CollapsingToolbarLayout，上面的不需要了
                         android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
                         app:bg_color="#ffffff"
-                        app:mainText="用户反馈"
+                        app:mainText="分享APP"
                         app:otherText=""
                         app:showLine="false"
                         app:turnImage="@drawable/ic_keyboard_arrow_right_grey_400_24dp" />

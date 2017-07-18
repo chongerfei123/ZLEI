@@ -130,4 +130,13 @@ public class SettingItemView extends View {
             canvas.drawBitmap(turnImage,width-turnImage.getWidth()-10,height/3,drawablePaint);
         }
     }
+
+    public String getOtherText() {
+        return otherText;
+    }
+
+    public void setOtherText(String otherText) {
+        this.otherText = otherText;
+        postInvalidate();
+    }
 }
