@@ -98,16 +98,23 @@ public class SearchAvtivityModleImp implements SearchAvtivityModle {
                 continue;
             }
 
-            List<String> pics = bean.getPic();
-            if(pics.size() == 0){
+
+            String pic = bean.getPic();
+            if (pic.equals("")){
                 data.add(new SearchMultyItemBean(SearchMultyItemBean.TYPE_0pic,bean));
-            }else if (pics.size() == 1){
+            }else{
                 data.add(new SearchMultyItemBean(SearchMultyItemBean.TYPE_1pic,bean));
-            }else if (pics.size() == 2){
-                data.add(new SearchMultyItemBean(SearchMultyItemBean.TYPE_2pic,bean));
-            }else if (pics.size() >= 3){
-                data.add(new SearchMultyItemBean(SearchMultyItemBean.TYPE_3pic,bean));
             }
+            //List<String> pics = bean.getPic();
+//            if(pics.size() == 0){
+//                data.add(new SearchMultyItemBean(SearchMultyItemBean.TYPE_0pic,bean));
+//            }else if (pics.size() == 1){
+//                data.add(new SearchMultyItemBean(SearchMultyItemBean.TYPE_1pic,bean));
+//            }else if (pics.size() == 2){
+//                data.add(new SearchMultyItemBean(SearchMultyItemBean.TYPE_2pic,bean));
+//            }else if (pics.size() >= 3){
+//                data.add(new SearchMultyItemBean(SearchMultyItemBean.TYPE_3pic,bean));
+//            }
         }
         Log.e("sout",data.size()+"datasize--SearchAvtivityModleImp");
         return data;
@@ -115,17 +122,19 @@ public class SearchAvtivityModleImp implements SearchAvtivityModle {
 
     private ArrayList<SearchDataBean.ResultBean.ListBean> parseJson(String json) {
         String replacejson = json;
-        if (json.contains("\"pic\":\"\"")){
-            Log.e("sout","\"pic\":\"\"");
-            replacejson = json.replace("\"pic\":\"\"", "\"pic\":[]");
-        }
-        if (replacejson.contains("\"pic\":\"\"")){
-            Log.e("sout","还有\"pic\":\"\"");
-        }
+//        if (json.contains("\"pic\":\"\"")){
+//            Log.e("sout","\"pic\":\"\"");
+//            replacejson = json.replace("\"pic\":\"\"", "\"pic\":[]");
+//        }
+//        if (replacejson.contains("\"pic\":\"\"")){
+//            Log.e("sout","还有\"pic\":\"\"");
+//        }
 
         ArrayList<SearchDataBean.ResultBean.ListBean> list = null;
         Gson gson = new Gson();
+        Log.e("sout", "parseJson: "+ replacejson);
         SearchDataBean dataBean = gson.fromJson(replacejson, SearchDataBean.class);
+
         String status = dataBean.getStatus();
         if (status.equals("0")){
             list = (ArrayList<SearchDataBean.ResultBean.ListBean>) dataBean.getResult().getList();

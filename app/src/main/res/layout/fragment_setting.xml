@@ -80,6 +80,7 @@ ps：有了CollapsingToolbarLayout，上面的不需要了
                     android:orientation="vertical">
 
                     <com.example.zl.zlei.View.myview.SettingItemView
+                        android:id="@+id/setting_Collect"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
                         android:layout_marginEnd="10dp"

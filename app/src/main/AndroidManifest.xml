@@ -37,7 +37,9 @@
             android:name=".View.activi.SearchActivity"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan" >
+
+        </activity>
         <activity
             android:name=".View.activi.WebActivity"
             android:label="@string/title_activity_web"
@@ -79,7 +81,11 @@
         <activity
             android:name=".View.activi.OpenSLActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".View.activi.CollectActivity"></activity>
+
+        <activity android:name=".View.activi.CollectActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
     </application>
 
 </manifest>

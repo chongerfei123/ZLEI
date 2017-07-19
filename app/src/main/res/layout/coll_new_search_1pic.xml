@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="120dp"
+    android:layout_marginStart="3dp"
+    android:layout_marginEnd="3dp"
+    android:clickable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/cardview_light_background"
+    app:cardCornerRadius="12dp"
+    android:padding="5dp"
+    app:cardElevation="10dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/collect_search_1pic_title"
+                android:layout_width="190dp"
+                android:layout_height="match_parent"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:text="平壤札记｜超近距离看金正恩剪彩，现场掌声雷动！"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:id="@+id/collect_search_1pic_search_image1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingTop="20dp"
+                android:src="@mipmap/ic_launcher_round" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_marginBottom="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:text="来源：" />
+
+            <TextView
+                android:id="@+id/collect_search_1pic_src"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/textView3"
+                android:text="环球网" />
+
+            <TextView
+                android:id="@+id/fenlei"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/collect_search_1pic_src"
+                android:text="分类：" />
+
+            <TextView
+                android:id="@+id/collect_search_1pic_category"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/fenlei"
+                android:text="category" />
+
+            <TextView
+                android:id="@+id/sj"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="15dp"
+                android:layout_toEndOf="@+id/collect_search_1pic_category"
+                android:text="时间：" />
+
+            <TextView
+                android:textSize="12sp"
+                android:id="@+id/collect_search_1pic_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/sj"
+                android:text="2017-05-12 13:32:22" />
+
+        </RelativeLayout>
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>
+

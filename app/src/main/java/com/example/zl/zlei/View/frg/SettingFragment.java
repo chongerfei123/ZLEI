@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.zl.zlei.R;
+import com.example.zl.zlei.View.activi.CollectActivity;
 import com.example.zl.zlei.View.activi.OpenSLActivity;
 import com.example.zl.zlei.View.myview.SettingItemView;
 
@@ -42,6 +43,8 @@ public class SettingFragment extends Fragment {
     SettingItemView contactMe;
     @BindView(R.id.setting_ClearCache)
     SettingItemView settingClearCache;
+    @BindView(R.id.setting_Collect)
+    SettingItemView settingCollect;
     private AlertDialog dialog;
 
     public SettingFragment() {
@@ -64,7 +67,6 @@ public class SettingFragment extends Fragment {
         init();
 
         openSourceLicenseListener();
-
 
 
     }
@@ -181,7 +183,7 @@ public class SettingFragment extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 settingClearCache.setOtherText("暂无");
-                deleteFolderFile(String.valueOf(getActivity().getCacheDir()),true);
+                deleteFolderFile(String.valueOf(getActivity().getCacheDir()), true);
             }
         });
         builder.show();
@@ -190,7 +192,7 @@ public class SettingFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser){
+        if (isVisibleToUser) {
             String cache_Str = readCache();
             settingClearCache.setOtherText(cache_Str);
         }
@@ -198,6 +200,7 @@ public class SettingFragment extends Fragment {
 
     /**
      * 删除指定目录下文件及目录
+     *
      * @param deleteThisPath
      * @param filePath
      * @return
@@ -226,5 +229,11 @@ public class SettingFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+    }
+
+    @OnClick(R.id.setting_Collect)
+    public void onSettingCollectClicked() {
+        Intent intent = new Intent(getContext(), CollectActivity.class);
+        startActivity(intent);
     }
 }
